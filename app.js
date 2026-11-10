@@ -11,11 +11,11 @@
     capacitance: 220, voltage: 12, dielectric: 1, plateArea: 100, gap: 1,
     c1: 4, c2: 6, c3: 3, c4: 8, capBattery: 12,
     ohmVoltage: 12, resistance: 6, r1: 4, r2: 8, r3: 12, internalR: 1, battery: 18,
-    charge: 1.6, particleSpeed: 2, field: 0.5, particleAngle: 90,
-    wireCurrent: 3, wireLength: 0.2, wireAngle: 90,
-    ionCharge: 1, detectorGap: 0.08, accelVoltage: 2000,
+    charge: 1.6, particleSpeed: 2, particleField: 0.5, particleAngle: 90,
+    wireCurrent: 3, wireLength: 0.2, wireField: 0.5, wireAngle: 90,
+    ionCharge: 1, ionField: 0.5, detectorGap: 0.08, accelVoltage: 2000,
     loopArea: 0.02, turns: 100, fluxAngle: 0, fieldRate: 0.2, coilResistance: 10,
-    coilRadius: 0.08, rotation: 60, targetEmf: 12,
+    alternatorTurns: 100, coilRadius: 0.08, rotation: 60, targetEmf: 12,
     acR: 100, inductance: 20, acCapacitance: 100, sourceVoltage: 12, frequency: 5
   };
 
@@ -305,11 +305,16 @@
     const el = event.target;
     if (!el.matches("[data-key]")) return;
     const key = el.dataset.key;
-    const value = Number(el.value);
-    if (!Number.isFinite(value)) return;
+    if (el.value.trim() === "") return;
+    const parsed = Number(el.value);
+    if (!Number.isFinite(parsed)) return;
+    const min = el.min === "" ? -Infinity : Number(el.min);
+    const max = el.max === "" ? Infinity : Number(el.max);
+    const value = Math.min(max, Math.max(min, parsed));
+    el.value = String(value);
     values[key] = value;
     panel.querySelectorAll('[data-key="' + key + '"]').forEach(peer => {
-      if (peer !== el) peer.value = el.value;
+      if (peer !== el) peer.value = String(value);
     });
     update();
   });
