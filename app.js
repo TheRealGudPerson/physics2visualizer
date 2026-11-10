@@ -391,8 +391,8 @@
     const start=performance.now(),duration=angularSpeed>0?2*Math.PI/angularSpeed*1000:1000;
     function frame(now){
       const dpr=window.devicePixelRatio||1,ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height,pad=34*dpr,right=w-12*dpr,top=14*dpr,bottom=h-25*dpr;
-      const maxAbs=Math.max(1e-12,Math.abs(fluxPeak),Math.abs(emfPeak)),phase=reduced?0:((now-start)%duration)/duration*2*Math.PI;
-      const x=pad+(right-pad)*phase/(2*Math.PI),y=top+(bottom-top)*(0.5-(emfPeak*Math.sin(phase))/(2*maxAbs));
+      const phase=reduced?0:((now-start)%duration)/duration*2*Math.PI;
+      const x=pad+(right-pad)*phase/(2*Math.PI),y=top+(bottom-top)*(0.5-Math.sin(phase)/2);
       ctx.beginPath();ctx.arc(x,y,5*dpr,0,2*Math.PI);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue("--warm").trim()||"#f1bd75";ctx.fill();
       if(!reduced)generatorAnimationId=requestAnimationFrame(frame);
     }
