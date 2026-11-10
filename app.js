@@ -68,9 +68,9 @@
   function field(key, label, min, max, step, unit, digits) {
     const value = values[key];
     const id = "field-" + key;
-    return '<div class="field"><div class="field-heading"><label for="' + id + '">' + label + '</label><span class="field-unit">' + (unit || "") + '</span></div>' +
-      '<input id="' + id + '" class="range-input" type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '" data-key="' + key + '" data-role="range">' +
-      '<div class="number-wrap"><input aria-label="' + label + ' numeric value" type="number" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '" data-key="' + key + '" data-role="number"><span>' + (unit || "") + '</span></div></div>';
+    return '<div class="field"><div class="field-heading"><label for="' + id + '-range">' + label + '</label><span class="field-unit">' + (unit || "") + '</span></div>' +
+      '<input id="' + id + '-range" class="range-input" type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '" data-key="' + key + '" data-role="range">' +
+      '<div class="number-wrap"><input id="' + id + '" aria-label="' + label + ' numeric value" type="number" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '" data-key="' + key + '" data-role="number"><span>' + (unit || "") + '</span></div></div>';
   }
 
   function result(id, label, unit) {
@@ -112,10 +112,10 @@
       card("Parallel-plate capacitor", "GEOMETRY MODEL",
         field("dielectric", "Relative dielectric constant κ", 1, 10, 0.1, "") + field("plateArea", "Plate area", 1, 500, 1, "cm²") + field("gap", "Plate separation", 0.1, 10, 0.1, "mm"),
         result("plateCap", "Capacitance", "pF") + '<p class="readout-note">C = κε₀A/d. Increasing plate area increases capacitance; increasing separation decreases it.</p>') +
-      card("Studio 6 · mixed capacitor network", "STUDIO PRESET",
+      card("Studio 6 · mixed capacitor network", "NETWORK EXAMPLE",
         field("c1", "C₁", 0.1, 30, 0.1, "µF") + field("c2", "C₂", 0.1, 30, 0.1, "µF") + field("c3", "C₃", 0.1, 30, 0.1, "µF") + field("c4", "C₄", 0.1, 30, 0.1, "µF") + field("capBattery", "Battery voltage", 0, 50, 0.5, "V"),
-        result("capEquivalent", "Equivalent capacitance", "µF") + result("capNetworkCharge", "Battery charge", "µC") + result("capNetworkEnergy", "Total stored energy", "mJ") + result("capInnerVoltage", "Voltage across inner parallel section", "V") + result("capQ1", "Charge on C₁ and C₂", "µC") + result("capQ3", "Charge on C₃", "µC") + result("capQ4", "Charge on C₄", "µC"),
-        '<div class="topology"><span>C₁ — C₂</span><b>‖ C₃</b><span>— C₄</span></div>' + button("Load Studio 6 preset", "preset-capacitors")) +
+        result("capEquivalent", "Equivalent capacitance", "µF") + result("capNetworkCharge", "Battery charge", "µC") + result("capNetworkEnergy", "Total stored energy", "mJ") + result("capInnerVoltage", "Voltage across inner parallel section", "V") + result("capQ1", "Charge on C₁ and C₂", "µC") + result("capQ3", "Charge on C₃", "µC") + result("capQ4", "Charge on C₄", "µC") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 6 worksheet.</p>',
+        '<div class="topology"><span>C₁ — C₂</span><b>‖ C₃</b><span>— C₄</span></div>' + button("Load example values", "preset-capacitors")) +
       concept("What stays the same in series and parallel?", "Ideal capacitors in series carry equal-magnitude charge. Capacitors in parallel share the same potential difference.");
   }
 
@@ -124,10 +124,10 @@
       field("ohmVoltage", "Voltage", 0, 48, 0.5, "V") + field("resistance", "Resistance", 0.1, 100, 0.1, "Ω"),
       result("dcCurrent", "Current", "A") + result("dcPower", "Power dissipated", "W") +
       '<p class="readout-note">V = IR · P = IV = I²R = V²/R</p>') +
-      card("Studio 7 · battery and resistor network", "INTERNAL RESISTANCE",
+      card("Studio 7 · battery and resistor network", "NETWORK EXAMPLE",
         field("battery", "Battery emf", 0, 48, 0.5, "V") + field("internalR", "Internal resistance r", 0, 20, 0.1, "Ω") + field("r1", "Series resistor R₁", 0.1, 50, 0.1, "Ω") + field("r2", "Parallel resistor R₂", 0.1, 50, 0.1, "Ω") + field("r3", "Parallel resistor R₃", 0.1, 50, 0.1, "Ω"),
-        result("parallelR", "R₂ ‖ R₃", "Ω") + result("loadR", "External load", "Ω") + result("networkCurrent", "Total current", "A") + result("branchVoltage", "Parallel branch voltage", "V") + result("branchI2", "Current through R₂", "A") + result("branchI3", "Current through R₃", "A") + result("kcl", "KCL check (I₂ + I₃)", "A"),
-        button("Load Studio 7 preset", "preset-dc")) +
+        result("parallelR", "R₂ ‖ R₃", "Ω") + result("loadR", "External load", "Ω") + result("networkCurrent", "Total current", "A") + result("branchVoltage", "Parallel branch voltage", "V") + result("branchI2", "Current through R₂", "A") + result("branchI3", "Current through R₃", "A") + result("kcl", "KCL check (I₂ + I₃)", "A") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 7 worksheet.</p>',
+        button("Load example values", "preset-dc")) +
       concept("What does Kirchhoff's current law express?", "Charge conservation at a junction: the total current entering a junction equals the total current leaving it.") +
       concept("Why is terminal voltage lower than emf under load?", "Current through a battery's internal resistance produces an internal voltage drop. For a discharging battery, terminal voltage is ε − Ir.");
   }
@@ -140,10 +140,10 @@
       card("Force on a current-carrying wire", "WIRE IN A FIELD",
         field("wireCurrent", "Current", 0, 20, 0.1, "A") + field("wireLength", "Length in field", 0, 2, 0.01, "m") + field("wireField", "Magnetic field", 0, 2, 0.01, "T") + field("wireAngle", "Angle between wire and B", 0, 180, 1, "°"),
         result("wireForce", "Force magnitude", "N") + '<p class="readout-note">F = IℓB sin θ. For a wire with multiple differently oriented segments, evaluate each segment separately.</p>') +
-      card("Studio 8 · mass spectrometer", "DERIVED MODEL",
+      card("Studio 8 · mass spectrometer", "DERIVED EXAMPLE",
         field("ionCharge", "Ion charge magnitude", 1, 5, 1, "e") + field("ionField", "Magnetic field", 0.01, 2, 0.01, "T") + field("detectorGap", "Detector separation (semicircle diameter)", 0.001, 0.5, 0.001, "m") + field("accelVoltage", "Accelerating voltage", 1, 10000, 10, "V"),
-        result("ionMass", "Ion mass", "kg") + result("ionMassAmu", "Ion mass", "u"),
-        button("Load Studio 8 preset", "preset-magnetic")) +
+        result("ionMass", "Ion mass", "kg") + result("ionMassAmu", "Ion mass", "u") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 8 worksheet.</p>',
+        button("Load example values", "preset-magnetic")) +
       concept("When is magnetic force zero?", "The magnitude is zero when the velocity is parallel or antiparallel to the magnetic field (θ = 0° or 180°). A stationary charge also experiences no magnetic force.");
   }
 
@@ -152,10 +152,10 @@
       field("field", "Magnetic field", 0, 2, 0.01, "T") + field("loopArea", "Loop area", 0.001, 0.2, 0.001, "m²") + field("fluxAngle", "Angle between B and area normal", 0, 180, 1, "°") + field("turns", "Number of turns", 1, 500, 1, "") + field("fieldRate", "Rate of field change", 0, 2, 0.01, "T/s") + field("coilResistance", "Coil resistance", 0.1, 100, 0.1, "Ω"),
       result("singleFlux", "Flux per loop", "Wb") + result("fluxLinkage", "Flux linkage", "Wb-turn") + result("inducedEmf", "Induced emf magnitude", "V") + result("inducedCurrent", "Induced current magnitude", "A") +
       '<p class="readout-note">This model changes B while holding area and orientation fixed. The direction of induced current depends on whether flux is increasing or decreasing.</p>') +
-      card("Studio 9 · rotating-coil alternator", "ROTATING COIL",
+      card("Studio 9 · rotating-coil alternator", "ROTATING COIL EXAMPLE",
         field("alternatorTurns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 600, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
-        result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T"),
-        button("Load Studio 9 preset", "preset-induction")) +
+        result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 9 worksheet.</p>',
+        button("Load example values", "preset-induction")) +
       concept("What does Lenz's law tell you?", "The induced current creates a magnetic field that opposes the change in magnetic flux that produced it. It does not necessarily oppose the original field itself.");
   }
 
@@ -164,10 +164,10 @@
       field("acR", "Resistance R", 1, 1000, 1, "Ω") + field("inductance", "Inductance L", 1, 200, 1, "mH") + field("acCapacitance", "Capacitance C", 1, 1000, 1, "nF") + field("sourceVoltage", "Peak source voltage", 0.1, 50, 0.1, "V") + field("frequency", "Driving frequency", 0.1, 100, 0.1, "kHz"),
       result("angularFrequency", "Angular frequency", "rad/s") + result("xl", "Inductive reactance", "Ω") + result("xc", "Capacitive reactance", "Ω") + result("impedance", "Impedance", "Ω") + result("phase", "Phase angle", "°") + result("peakCurrent", "Peak current", "A") + result("rmsCurrent", "RMS current", "A") + result("rmsVoltage", "RMS source voltage", "V") + result("powerFactor", "Power factor", "") + result("averagePower", "Average resistor power", "W"),
       '<div class="graph-wrap"><canvas id="rlcGraph" aria-label="Series RLC current amplitude versus frequency graph"></canvas><div class="graph-caption"><span>Current amplitude vs. frequency</span><span>Resonance marked</span></div></div>') +
-      card("Resonance characteristics", "SERIES RLC",
+      card("Resonance characteristics", "SERIES RLC EXAMPLE",
         '<p class="static-note">Resonance occurs when Xₗ = X꜀. The ideal series circuit then has minimum impedance and maximum current.</p>',
-        result("resonanceOmega", "Resonant angular frequency", "rad/s") + result("resonanceHz", "Resonant frequency", "Hz") + result("bandwidth", "Bandwidth Δf", "Hz") + result("angularBandwidth", "Angular bandwidth Δω", "rad/s") + result("resonantCurrent", "Peak current at resonance", "A")) +
-      button("Load Studio 10 preset", "preset-ac", "small-button preset-button") +
+        result("resonanceOmega", "Resonant angular frequency", "rad/s") + result("resonanceHz", "Resonant frequency", "Hz") + result("bandwidth", "Bandwidth Δf", "Hz") + result("angularBandwidth", "Angular bandwidth Δω", "rad/s") + result("resonantCurrent", "Peak current at resonance", "A") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 10 worksheet.</p>') +
+      button("Load example values", "preset-ac", "small-button preset-button") +
       concept("What changes at resonance?", "In an ideal series-RLC circuit, inductive and capacitive reactance have equal magnitude and cancel. The impedance is then R, the phase angle is zero, and current is maximum for a fixed source voltage.");
   }
 
