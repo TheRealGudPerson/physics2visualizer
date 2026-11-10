@@ -11,12 +11,12 @@
     capacitance: 220, voltage: 12, dielectric: 1, plateArea: 100, gap: 1,
     c1: 4, c2: 6, c3: 3, c4: 8, capBattery: 12,
     ohmVoltage: 12, resistance: 6, r1: 4, r2: 8, r3: 12, internalR: 1, battery: 18,
-    charge: 1.6, particleSpeed: 2, particleField: 0.5, particleAngle: 90,
-    wireCurrent: 3, wireLength: 0.2, wireField: 0.5, wireAngle: 90,
-    ionCharge: 1, ionField: 0.5, detectorGap: 0.08, accelVoltage: 2000,
+    charge: 1.6e-10, particleSpeed: 3.2, particleField: 0.4, particleAngle: 90,
+    wireCurrent: 3.5, wireLength: 0.08, wireField: 0.06, wireAngle: 90,
+    ionCharge: 1, ionField: 0.3, detectorGap: 0.3, accelVoltage: 3200,
     loopArea: 0.02, turns: 100, fluxAngle: 0, fieldRate: 0.2, coilResistance: 10,
-    alternatorTurns: 100, coilRadius: 0.08, rotation: 60, targetEmf: 12,
-    acR: 100, inductance: 20, acCapacitance: 100, sourceVoltage: 12, frequency: 5
+    alternatorTurns: 250, coilRadius: 0.05, rotation: 1200, targetEmf: 14,
+    acR: 50, inductance: 1, acCapacitance: 10, sourceVoltage: 10, frequency: 50.329
   };
 
   const values = { ...defaults };
@@ -114,7 +114,7 @@
         result("plateCap", "Capacitance", "pF") + '<p class="readout-note">C = κε₀A/d. Increasing plate area increases capacitance; increasing separation decreases it.</p>') +
       card("Studio 6 · mixed capacitor network", "NETWORK EXAMPLE",
         field("c1", "C₁", 0.1, 30, 0.1, "µF") + field("c2", "C₂", 0.1, 30, 0.1, "µF") + field("c3", "C₃", 0.1, 30, 0.1, "µF") + field("c4", "C₄", 0.1, 30, 0.1, "µF") + field("capBattery", "Battery voltage", 0, 50, 0.5, "V"),
-        result("capEquivalent", "Equivalent capacitance", "µF") + result("capNetworkCharge", "Battery charge", "µC") + result("capNetworkEnergy", "Total stored energy", "mJ") + result("capInnerVoltage", "Voltage across inner parallel section", "V") + result("capQ1", "Charge on C₁ and C₂", "µC") + result("capQ3", "Charge on C₃", "µC") + result("capQ4", "Charge on C₄", "µC") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 6 worksheet.</p>',
+        result("capEquivalent", "Equivalent capacitance", "µF") + result("capNetworkCharge", "Battery charge", "µC") + result("capNetworkEnergy", "Total stored energy", "mJ") + result("capInnerVoltage", "Voltage across inner parallel section", "V") + result("capQ1", "Charge on C₁ and C₂", "µC") + result("capQ3", "Charge on C₃", "µC") + result("capQ4", "Charge on C₄", "µC") + '<p class="readout-note">Studio 6 Problem 1 values: C₁ = 3 µF, C₂ = 6 µF, C₃ = 4 µF, C₄ = 12 µF, V₀ = 12 V. The network is (C₁ in series with C₂) in parallel with C₃, then in series with C₄.</p>',
         '<div class="topology"><span>C₁ — C₂</span><b>‖ C₃</b><span>— C₄</span></div>' + button("Load example values", "preset-capacitors")) +
       concept("What stays the same in series and parallel?", "Ideal capacitors in series carry equal-magnitude charge. Capacitors in parallel share the same potential difference.");
   }
@@ -126,7 +126,7 @@
       '<p class="readout-note">V = IR · P = IV = I²R = V²/R</p>') +
       card("Studio 7 · battery and resistor network", "NETWORK EXAMPLE",
         field("battery", "Battery emf", 0, 48, 0.5, "V") + field("internalR", "Internal resistance r", 0, 20, 0.1, "Ω") + field("r1", "Series resistor R₁", 0.1, 50, 0.1, "Ω") + field("r2", "Parallel resistor R₂", 0.1, 50, 0.1, "Ω") + field("r3", "Parallel resistor R₃", 0.1, 50, 0.1, "Ω"),
-        result("parallelR", "R₂ ‖ R₃", "Ω") + result("loadR", "External load", "Ω") + result("networkCurrent", "Total current", "A") + result("branchVoltage", "Parallel branch voltage", "V") + result("branchI2", "Current through R₂", "A") + result("branchI3", "Current through R₃", "A") + result("kcl", "KCL check (I₂ + I₃)", "A") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 7 worksheet.</p>',
+        result("parallelR", "R₂ ‖ R₃", "Ω") + result("loadR", "External load", "Ω") + result("networkCurrent", "Total current", "A") + result("branchVoltage", "Parallel branch voltage", "V") + result("branchI2", "Current through R₂", "A") + result("branchI3", "Current through R₃", "A") + result("kcl", "KCL check (I₂ + I₃)", "A") + '<p class="readout-note">Studio 7 Problem 2: R₁ = 33 Ω in series with R₂ ‖ R₃, where R₂ = 33 Ω and R₃ = 47 Ω. Include the source internal resistance rᵦ = 12.5 Ω; Vᵦ = 6 V.</p>',
         button("Load example values", "preset-dc")) +
       concept("What does Kirchhoff's current law express?", "Charge conservation at a junction: the total current entering a junction equals the total current leaving it.") +
       concept("Why is terminal voltage lower than emf under load?", "Current through a battery's internal resistance produces an internal voltage drop. For a discharging battery, terminal voltage is ε − Ir.");
@@ -134,7 +134,7 @@
 
   function renderMagnetic() {
     return card("Magnetic force on a charged particle", "LORENTZ FORCE",
-      field("charge", "Charge magnitude", 0.1, 5, 0.1, "nC") + field("particleSpeed", "Particle speed", 0, 20, 0.1, "Mm/s") + field("particleField", "Magnetic field", 0, 2, 0.01, "T") + field("particleAngle", "Angle between v and B", 0, 180, 1, "°"),
+      field("charge", "Charge magnitude", 1e-12, 1, 1e-12, "nC") + field("particleSpeed", "Particle speed", 0, 20, 0.1, "Mm/s") + field("particleField", "Magnetic field", 0, 2, 0.01, "T") + field("particleAngle", "Angle between v and B", 0, 180, 1, "°"),
       result("particleForce", "Force magnitude", "mN") + result("particleDirection", "Force direction", "") +
       '<p class="readout-note">F = |q|vB sin θ. Direction depends on charge sign and the orientation of v × B.</p>') +
       card("Force on a current-carrying wire", "WIRE IN A FIELD",
@@ -142,7 +142,7 @@
         result("wireForce", "Force magnitude", "N") + '<p class="readout-note">F = IℓB sin θ. For a wire with multiple differently oriented segments, evaluate each segment separately.</p>') +
       card("Studio 8 · mass spectrometer", "DERIVED EXAMPLE",
         field("ionCharge", "Ion charge magnitude", 1, 5, 1, "e") + field("ionField", "Magnetic field", 0.01, 2, 0.01, "T") + field("detectorGap", "Detector separation (semicircle diameter)", 0.001, 0.5, 0.001, "m") + field("accelVoltage", "Accelerating voltage", 1, 10000, 10, "V"),
-        result("ionMass", "Ion mass", "kg") + result("ionMassAmu", "Ion mass", "u") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 8 worksheet.</p>',
+        result("ionMass", "Ion mass", "kg") + result("ionMassAmu", "Ion mass", "u") + '<p class="readout-note">Studio 8 Problem 4 values: Vₐcc = 3.20 kV, q = +e, B = 0.300 T, detector separation x = 0.300 m. The semicircle radius is x/2.</p>',
         button("Load example values", "preset-magnetic")) +
       concept("When is magnetic force zero?", "The magnitude is zero when the velocity is parallel or antiparallel to the magnetic field (θ = 0° or 180°). A stationary charge also experiences no magnetic force.");
   }
@@ -154,7 +154,7 @@
       '<p class="readout-note">This model changes B while holding area and orientation fixed. The direction of induced current depends on whether flux is increasing or decreasing.</p>') +
       card("Studio 9 · rotating-coil alternator", "ROTATING COIL EXAMPLE",
         field("alternatorTurns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 600, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
-        result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 9 worksheet.</p>',
+        result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T") + '<p class="readout-note">Studio 9 Problem 4: N = 250 turns, r = 5.0 cm, rotation = 1200 rpm, peak emf = 14 V. Solve B = εpeak/(Nπr²ω).</p>',
         button("Load example values", "preset-induction")) +
       concept("What does Lenz's law tell you?", "The induced current creates a magnetic field that opposes the change in magnetic flux that produced it. It does not necessarily oppose the original field itself.");
   }
@@ -166,7 +166,7 @@
       '<div class="graph-wrap"><canvas id="rlcGraph" aria-label="Series RLC current amplitude versus frequency graph"></canvas><div class="graph-caption"><span>Current amplitude vs. frequency</span><span>Resonance marked</span></div></div>') +
       card("Resonance characteristics", "SERIES RLC EXAMPLE",
         '<p class="static-note">Resonance occurs when Xₗ = X꜀. The ideal series circuit then has minimum impedance and maximum current.</p>',
-        result("resonanceOmega", "Resonant angular frequency", "rad/s") + result("resonanceHz", "Resonant frequency", "Hz") + result("bandwidth", "Bandwidth Δf", "Hz") + result("angularBandwidth", "Angular bandwidth Δω", "rad/s") + result("resonantCurrent", "Peak current at resonance", "A") + '<p class="readout-note">Example values are illustrative; replace them with the values from your Studio 10 worksheet.</p>') +
+        result("resonanceOmega", "Resonant angular frequency", "rad/s") + result("resonanceHz", "Resonant frequency", "Hz") + result("bandwidth", "Bandwidth Δf", "Hz") + result("angularBandwidth", "Angular bandwidth Δω", "rad/s") + result("resonantCurrent", "Peak current at resonance", "A") + '<p class="readout-note">Studio 10 Problem 3: R = 50 Ω, L = 1.0 mH, C = 10 nF, V₀ = 10 V. Resonance is at ω₀ = 1/√(LC), with peak current V₀/R.</p>') +
       button("Load example values", "preset-ac", "small-button preset-button") +
       concept("What changes at resonance?", "In an ideal series-RLC circuit, inductive and capacitive reactance have equal magnitude and cancel. The impedance is then R, the phase angle is zero, and current is maximum for a fixed source voltage.");
   }
@@ -291,11 +291,11 @@
 
   function preset(name) {
     const presets = {
-      capacitors: { c1: 4, c2: 6, c3: 3, c4: 8, capBattery: 12 },
-      dc: { battery: 18, internalR: 1, r1: 4, r2: 8, r3: 12 },
-      magnetic: { ionCharge: 1, ionField: 0.5, particleField: 0.5, wireField: 0.5, detectorGap: 0.08, accelVoltage: 2000 },
-      induction: { turns: 100, alternatorTurns: 100, coilRadius: 0.08, rotation: 60, targetEmf: 12 },
-      ac: { acR: 100, inductance: 20, acCapacitance: 100, sourceVoltage: 12, frequency: 5 }
+      capacitors: { c1: 3, c2: 6, c3: 4, c4: 12, capBattery: 12 },
+      dc: { battery: 6, internalR: 12.5, r1: 33, r2: 33, r3: 47 },
+      magnetic: { charge: 1.6e-10, particleSpeed: 3.2, particleField: 0.4, particleAngle: 90, wireCurrent: 3.5, wireLength: 0.08, wireField: 0.06, wireAngle: 90, ionCharge: 1, ionField: 0.3, detectorGap: 0.3, accelVoltage: 3200 },
+      induction: { turns: 100, alternatorTurns: 250, coilRadius: 0.05, rotation: 1200, targetEmf: 14 },
+      ac: { acR: 50, inductance: 1, acCapacitance: 10, sourceVoltage: 10, frequency: 50.329 }
     };
     Object.assign(values, presets[name] || {});
     render();
@@ -404,10 +404,10 @@
     if(r1>0&&r2>0&&r3>0){const topology=byId("builderTopology").value,rp=r2*r3/(r2+r3),rt=topology==="series"?r1+r2+r3:topology==="parallel"?1/(1/r1+1/r2+1/r3):r1+rp,i=vs/rt,vp=topology==="mixed"?i*rp:topology==="parallel"?vs:NaN;put("builderResult",row("Equivalent resistance",num(rt),"Ω")+row("Source current",num(i),"A")+(topology==="mixed"?row("Parallel branch voltage",num(vp),"V")+row("Branch currents",num(vp/r2)+" A + "+num(vp/r3),""):topology==="series"?row("Voltage drops",num(i*r1)+", "+num(i*r2)+", "+num(i*r3),"V"):row("Branch currents",num(vs/r1)+", "+num(vs/r2)+", "+num(vs/r3),"A")));}
     const li=val("lineI"),lr=val("lineR"),lv=val("lineV");
     put("lineResult",row("Line voltage drop",num(li*lr),"V")+row("Line power loss",num(li*li*lr),"W")+row("Load-side voltage",num(lv-li*lr),"V")+row("Supply voltage lost",num(lv>0?100*li*lr/lv:NaN),"%"));
-    const mv=val("motorV"),mi=val("motorI"),mt=val("motorT"),rpm=val("motorRPM"),pin=mv*mi,omega=rpm*2*Math.PI/60,pout=mt*omega;
-    put("motorResult",row("Electrical input",num(pin),"W")+row("Mechanical output",num(pout),"W")+row("Efficiency",num(pin>0?100*pout/pin:NaN),"%")+row("Input minus output",num(pin-pout),"W"));
+    const mv=val("motorV"),eff=val("motorEff")/100,weight=val("motorWeight"),speed=val("motorSpeed"),pout=weight*speed,pin=eff>0?pout/eff:NaN,current=mv>0?pin/mv:NaN;
+    put("motorResult",row("Mechanical output power",num(pout),"W")+row("Required electrical input",num(pin),"W")+row("Motor current",num(current),"A")+row("Efficiency",num(eff*100),"%"));
     const c1=val("shareC1")*1e-6,c2=val("shareC2")*1e-6,v1=val("shareV1"),v2=val("shareV2"),vf=(c1*v1+c2*v2)/(c1+c2),ei=.5*c1*v1*v1+.5*c2*v2*v2,ef=.5*(c1+c2)*vf*vf;
-    put("shareResult",row("Final common voltage",num(vf),"V")+row("Initial total charge",num(c1*v1+c2*v2,5),"C")+row("Initial energy",num(ei*1e6),"µJ")+row("Final energy",num(ef*1e6),"µJ")+row("Energy converted to other forms",num((ei-ef)*1e6),"µJ"));
+    put("shareResult",row("Final common voltage",num(vf),"V")+row("Initial total charge",num((c1*v1+c2*v2)*1e6),"µC")+row("Initial energy",num(ei*1e3),"mJ")+row("Final energy",num(ef*1e3),"mJ")+row("Energy dissipated in resistor",num((ei-ef)*1e3),"mJ"));
     const tr=val("transR"),tc=val("transC")*1e-6,tl=val("transL")*1e-3,tv=val("transV"),tt=val("transT")*1e-3,tauRC=tr*tc,tauRL=tl/tr,vc=tv*(1-Math.exp(-tt/tauRC)),irc=tv/tr*Math.exp(-tt/tauRC),il=tv/tr*(1-Math.exp(-tt/tauRL));
     put("transResult",row("RC time constant",num(tauRC*1e3),"ms")+row("Capacitor voltage",num(vc),"V")+row("RC charging current",num(irc*1e3),"mA")+row("RL time constant",num(tauRL*1e3),"ms")+row("RL inductor current",num(il*1e3),"mA"));
     const tmax=Math.max(5*tauRC,5*tauRL,1e-9),ts=Array.from({length:121},(_,i)=>tmax*i/120);
@@ -421,6 +421,11 @@
     const oq=val("orbitQ")*1e-9,om=val("orbitM")*1e-9,ov=val("orbitV")*1e3,ob=val("orbitB")*1e-3,orbitR=om*ov/(oq*ob),orbitPeriod=2*Math.PI*om/(oq*ob);
     put("orbitResult",row("Orbit radius",num(orbitR*100),"cm")+row("Cyclotron period",num(orbitPeriod*1e6),"µs")+row("Cyclotron frequency",num(1/orbitPeriod),"Hz"));
     const oc=byId("orbitGraph"); if(oc){const cx=oc.getContext("2d"),d=window.devicePixelRatio||1,w=oc.clientWidth||440,h=180;oc.width=w*d;oc.height=h*d;cx.scale(d,d);cx.clearRect(0,0,w,h);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--line");cx.beginPath();cx.moveTo(w/2,8);cx.lineTo(w/2,h-8);cx.stroke();const rr=Math.min(65,Math.max(8,orbitR*1000));cx.beginPath();cx.arc(w/2,h/2,rr,0,2*Math.PI);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--accent");cx.lineWidth=2;cx.stroke();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--accent-2");cx.beginPath();cx.arc(w/2+rr,h/2,4,0,2*Math.PI);cx.fill();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--muted");cx.fillText("schematic orbit (not to scale)",10,h-10);}
+    const mu0s9=4*Math.PI*1e-7,s9q=val("s9Q"),s9r=val("s9Radius")/100,s9b=val("s9B")/100,s9d=s9b+s9r,s9res=val("s9Resistance"),s9factor=s9d> s9r ? s9d-Math.sqrt(s9d*s9d-s9r*s9r) : NaN,s9emf=mu0s9*s9q*s9factor,s9i=s9res>0?s9emf/s9res:NaN;
+    put("s9Result",row("Wire-to-loop center distance",num(s9d*100),"cm")+row("Induced emf magnitude",num(s9emf*1e9),"nV")+row("Induced current magnitude",num(s9i*1e9),"nA")+row("Induced current direction","Clockwise",""));
+    const rcR=val("s10RcR"),rcC=val("s10RcC")*1e-6,rcW=val("s10RcW"),rcV=val("s10RcV"),rcX=1/(rcW*rcC),rcZ=Math.hypot(rcR,rcX),rcPhi=Math.atan2(-rcX,rcR),rcI=rcV/rcZ,rcIrms=rcI/Math.sqrt(2),rcP=rcIrms*rcIrms*rcR;
+    const rlR=val("s10RlR"),rlL=val("s10RlL"),rlW=val("s10RlW"),rlV=val("s10RlV"),rlX=rlW*rlL,rlZ=Math.hypot(rlR,rlX),rlPhi=Math.atan2(rlX,rlR),rlI=rlV/rlZ;
+    put("s10Result",'<h4>RC circuit · Problem 1</h4>'+row("Capacitive reactance",num(rcX),"Ω")+row("Impedance",num(rcZ),"Ω")+row("Phase angle",num(rcPhi*180/Math.PI),"°")+row("Peak current",num(rcI),"A")+row("RMS current",num(rcIrms),"A")+row("Power factor",num(Math.cos(rcPhi)),"")+row("Average resistor power",num(rcP),"W")+'<h4>RL circuit · Problem 2</h4>'+row("Inductive reactance",num(rlX),"Ω")+row("Impedance",num(rlZ),"Ω")+row("Phase angle",num(rlPhi*180/Math.PI),"°")+row("Peak current",num(rlI),"A")+row("Power factor",num(Math.cos(rlPhi)),""));
     const gn=val("genN"),gb=val("genB"),ga=val("genA")*1e-4,gw=val("genRPM")*2*Math.PI/60,gflux=gb*ga,gemf=gn*gb*ga*gw;
     put("genResult",row("Maximum flux per turn",num(gflux),"Wb")+row("Peak induced emf",num(gemf),"V")+row("Angular speed",num(gw),"rad/s"));
     const gt=Array.from({length:241},(_,i)=>i/240*(gw>0?2*Math.PI/gw:1)),phase=gt.map(t=>gw*t);
