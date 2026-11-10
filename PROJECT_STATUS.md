@@ -8,6 +8,39 @@
 
 This document describes the intended purpose of the project, what is implemented in the local source, what is currently present in the GitHub repository, and what remains unfinished. It is deliberately explicit about the difference between a feature existing in the local working files and that feature being available from the published repository.
 
+## Rebuild validation pass — 2026-11-10
+
+### Source-level and calculation checks completed
+
+- [x] Re-ran JavaScript parse check after edits; passed.
+- [x] Checked statically declared input keys against defaults; the missing magnetic and alternator defaults discovered during review were added.
+- [x] Checked all 50 result-output IDs: no duplicates, no outputs without an update path, and no update targets without a corresponding output.
+- [x] Added range-control label associations, explicit IDs for numeric controls, and visible keyboard-focus outlines.
+- [x] Numeric inputs now clamp to their declared minimum/maximum and mirror the clamped value into the paired range control.
+- [x] Renamed preset buttons to "Load example values" and added notices explaining that current numeric examples are illustrative, not verified official Studio values.
+- [x] Updated the sidebar hint so it no longer promises a diagram that the reconstructed interface does not yet render.
+- [x] Evaluated 16 representative formula cases across all six topics. All 16 passed, including zero-angle/zero-rate edge cases, the documented Studio 6 capacitor topology, Studio 7 current splitting, the Studio 8 mass-spectrometer derivation, and the Studio 9 Faraday-law calculation.
+
+These formula checks independently evaluate the equations represented in the source. They are **not** browser-driven tests of the rendered application.
+
+### RLC cross-check against available course-related material
+
+The user's Library contains a Physics Lab 8 RLC report (not the Studio 10 worksheet). With (L=47\,\mathrm{mH}), (C=4700\,\mathrm{pF}), and approximately (130\,\Omega) of inductor internal resistance, the reconstructed resonance and bandwidth equations give:
+
+- Theoretical resonance: (f_0=10{,}708.34\,\mathrm{Hz}), consistent with the report's (10{,}708\,\mathrm{Hz}).
+- For a (503\,\Omega) external resistor, total series resistance (633\,\Omega): theoretical bandwidth (2143.51\,\mathrm{Hz}), consistent with approximately (2144\,\mathrm{Hz}).
+- For a (1990\,\Omega) external resistor, total series resistance (2120\,\Omega): theoretical bandwidth (7178.90\,\mathrm{Hz}), consistent with approximately (7179\,\mathrm{Hz}).
+
+This supports the resonance and bandwidth formulas. The current RLC calculator uses one lumped series-resistance input, so total series resistance must be entered when inductor winding resistance is included. Its average-power output is power dissipated in that lumped resistance, not specifically the external resistor alone.
+
+### Still blocked / not yet verified
+
+- [ ] Real browser execution and interaction testing; no browser session or browser automation was available during this pass.
+- [ ] Responsive layout checks at desktop, tablet, and phone widths.
+- [ ] Keyboard-only and screen-reader testing. Source-level labels and focus styling were improved, but that is not a substitute for an accessibility audit.
+- [ ] Exact Studio 6–10 preset validation. The repository contains no Studio worksheets or answer keys, and the Library search did not locate those specific materials. Current example values must not be represented as official studio values.
+- [ ] GitHub Pages deployment and live-site verification.
+
 ---
 
 ## 1. Purpose of this repository
