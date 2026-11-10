@@ -4,7 +4,7 @@
 **Primary branch:** `main`  
 **Project type:** Static, browser-based Physics II study application  
 **Course context:** PHY2049C  
-**Status (2026-11-10):** The reconstructed application and expanded study toolkit are implemented on `rebuild/static-runtime` and included in PR #1, which is open and ready for review. The branch is not merged to `main`. Browser and course-answer-key testing have been explicitly deferred at the user’s request.
+**Status (2026-11-10):** The reconstructed application is implemented on `rebuild/static-runtime` and included in PR #1, which is open and not merged to `main`. The user supplied Studio 6–10 question PDFs and solution PDFs during this session. Their numerical values have now been incorporated into relevant presets and new worksheet-specific calculators. Browser testing and automated validation of these latest edits were explicitly skipped at the user’s request.
 
 This document describes the intended purpose of the project, what is implemented in the local source, what is currently present in the GitHub repository, and what remains unfinished. It is deliberately explicit about the difference between a feature existing in the local working files and that feature being available from the published repository.
 
@@ -39,7 +39,9 @@ This supports the resonance and bandwidth formulas. The current RLC calculator u
 - [ ] Real browser execution and interaction testing; no browser session or browser automation was available during this pass.
 - [ ] Responsive layout checks at desktop, tablet, and phone widths.
 - [ ] Keyboard-only and screen-reader testing. Source-level labels and focus styling were improved, but that is not a substitute for an accessibility audit.
-- [ ] Exact Studio 6–10 preset validation. The repository contains no Studio worksheets or answer keys, and the Library search did not locate those specific materials. Current example values must not be represented as official studio values.
+- [x] Read the uploaded Studio 6–10 question PDFs and available solution PDFs; use their exact numeric data in supported worksheet-specific presets and calculators.
+- [ ] Browser-driven validation of the newly added Studio 6–10 examples against the PDFs; explicitly skipped at the user’s request.
+- [ ] Some Studio problems remain manual/conceptual rather than dedicated calculators: Studio 7 Problem 3 (full multi-loop Kirchhoff circuit), Studio 8 Problem 3 (regular hexagonal Biot–Savart loop), and Studio 9 Problems 1–2 (two-loop superposition and coaxial cable). Studio 8 Problem 2 is modeled one straight segment at a time.
 - [ ] GitHub Pages deployment and live-site verification.
 
 ---
@@ -443,7 +445,7 @@ The new tools are intentionally educational models, not full engineering package
 - Charge sharing assumes ideal capacitors connected in parallel with like polarity.
 - RC/RL plots show first-order charging/growth responses; the RLC waveforms are steady-state sinusoidal behavior, not switching transients.
 - Notes/bookmarks/completion flags remain in the current browser only. There are no accounts, cloud sync, or remote storage.
-- The Studio example values remain illustrative; no claim is made that they match the official Studio 6–10 answer keys.
+- Supported Studio 6–10 examples now use values transcribed from the uploaded question PDFs. The Studio 7 solution PDF was image-only, so its diagram values were read from the question PDF.
 
 ---
 
@@ -501,3 +503,34 @@ No additional framework, build pipeline, backend, account system, or GitHub Acti
 The rebuild branch now includes the six main topic sections and the expanded calculator/study toolkit listed in Section 6.3. The README has been rewritten to document the implemented tools, assumptions, and limitations.
 
 The implementation work requested in this pass is complete on `rebuild/static-runtime`. Browser/course validation was intentionally skipped. The branch remains isolated from `main` in PR #1. Testing has been deferred at the user’s request.
+
+
+## Uploaded Studio materials incorporated — 2026-11-10
+
+The supplied ZIP contained Studio 6, 7, 8, 9, and Recitation 10 question PDFs, plus solution PDFs for Studios 6, 8, 9, and 10. The Studio 7 solution PDF was image-only, so its circuit values were transcribed from the question PDF.
+
+### Worksheet-specific values now loaded
+
+- **Studio 6 Problem 1:** C₁ = 3 µF, C₂ = 6 µF, C₃ = 4 µF, C₄ = 12 µF, V₀ = 12 V. The supplied solution gives Cₑq = 4 µF, Utotal = 0.288 mJ, and Q₁ = 16 µC.
+- **Studio 6 Problem 2:** ρ = 1.7×10⁻⁸ Ω·m, L = 0.050 m, r = 0.50 mm, V = 24 V; leads ρline = 2.8×10⁻⁸ Ω·m, Lline = 20 m, Aline = 2.5 mm². The calculator reports element/lead resistance, circuit current, and separate I²R heating.
+- **Studio 6 Problem 3:** Pcity = 100 MW, Vcity = 50 kV, Rline = 2.0 Ω per line. The model uses the combined 4.0 Ω loop resistance and I = 2000 A; total line loss is 16 MW and efficiency is about 86.2%. Halving delivery voltage at constant city power doubles current and quadruples line loss.
+- **Studio 7 Problem 1:** V = 240 V, efficiency = 90%, weight = 200 N, lift speed = 3.1 m/s. The motor calculator uses Pout = Fv and η = Pout/(VI).
+- **Studio 7 Problem 2:** R₁ = R₂ = 33 Ω, R₃ = 47 Ω, Vb = 6 V, rb = 12.5 Ω. The preset maps to R₁ in series with R₂ ∥ R₃, plus source internal resistance.
+- **Studio 7 Problem 4:** 2.0 µF initially at 150 V and 1.0 µF initially uncharged. The charge-sharing model reports final voltage and the initial/final energy difference, which is energy dissipated in the resistor.
+- **Studio 8 Problem 1:** electron charge magnitude e = 1.60×10⁻¹⁹ C, speed = 3.2×10⁶ m/s, B = 0.40 T. The particle-force input is converted to nC; its default angle is 90°.
+- **Studio 8 Problem 4:** Vacc = 3.20 kV, q = +e, B = 0.300 T, detector separation x = 0.300 m. The derived mass is about 30.5 u, consistent with the provided solution's identification near 31 u (phosphorus).
+- **Studio 9 Problem 3:** Q = 5.88 A/s, loop radius = 1.66 cm, nearest-edge distance b = 1.36 cm, loop resistance = 2.79 Ω. The new calculator uses the circular-area flux integral and reports induced emf/current magnitudes and clockwise direction for the stated orientation.
+- **Studio 9 Problem 4:** N = 250, radius = 5 cm, rotation = 1200 rpm, target peak emf = 14 V. The alternator calculator solves for the required B field (about 56.7 mT).
+- **Studio 10 Problems 1–3:** RC values R = 50 Ω, C = 50 µF, ω = 120π rad/s, V₀ = 120 V; RL values R = 100 Ω, L = 0.25 H, ω = 1000 rad/s, V₀ = 10 V; RLC values R = 50 Ω, L = 1.0 mH, C = 10 nF, V₀ = 10 V. RC/RL outputs include reactance, impedance, phase, peak/RMS current as applicable, power factor, and average resistor power; RLC resonance is handled in the main AC panel.
+
+### Deliberately unimplemented exact worksheet solvers
+
+- Studio 7 Problem 3's complete four-source, multi-loop Kirchhoff circuit.
+- Studio 8 Problem 3's regular hexagonal Biot–Savart derivation as a dedicated calculator.
+- Studio 9 Problem 1's two-loop magnetic-field superposition and Problem 2's coaxial-cable Ampère-law piecewise field calculator.
+
+These remain manual exercises supported by general concept material. Studio 8 Problem 2 is represented by the straight-wire segment force calculator, which does not automatically vector-sum the full three-segment loop.
+
+### Validation status
+
+No browser, responsive, accessibility, cross-browser, or automated code tests were run after incorporating the uploaded materials. The user explicitly asked to skip testing. Worksheet values were transcribed from the PDFs and formulas aligned to provided solutions where available; this is not a substitute for execution-based verification.
