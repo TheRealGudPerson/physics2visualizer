@@ -4,7 +4,7 @@
 **Primary branch:** `main`  
 **Project type:** Static, browser-based Physics II study application  
 **Course context:** PHY2049C  
-**Status:** Core local application source exists; the GitHub repository is not yet deployable because the JavaScript and stylesheet referenced by the entry page have not been uploaded.
+**Status (2026-11-10):** A new first-pass runtime has been reconstructed on branch `rebuild/static-runtime`. It is not yet merged or browser-tested. The historical implementation details below describe the intended feature set and should not be read as confirmation that every original feature has been recreated.
 
 This document describes the intended purpose of the project, what is implemented in the local source, what is currently present in the GitHub repository, and what remains unfinished. It is deliberately explicit about the difference between a feature existing in the local working files and that feature being available from the published repository.
 
@@ -59,7 +59,7 @@ The README also references some studio topics that are not yet represented by a 
 
 ## 3. Implemented application sections
 
-The local application source currently contains six main topic sections. The descriptions below refer to the implementation in the local `app.js` and `styles.css` files, not to a claim that all of those files have already been committed to GitHub.
+The local application source currently contains six main topic sections. The descriptions below document the original target scope. The 2026-11-10 reconstruction is a first-pass implementation and does not yet reproduce every detail listed here.
 
 ### 3.1 Work and energy
 
@@ -356,12 +356,12 @@ The syntax check only confirms that the JavaScript parses. It does **not** estab
 
 ### 6.1 Missing from the GitHub repository
 
-At the time this document was prepared, the GitHub `main` branch was verified to contain `README.md` and `index.html`, but the current entry page's two required runtime files were not present:
+At the time of the initial status review, the GitHub `main` branch contained `README.md` and `index.html`, but the required runtime files were absent. They have since been created on `rebuild/static-runtime` (not yet merged to `main`):
 
-- [ ] `app.js` — missing from GitHub.
-- [ ] `styles.css` — missing from GitHub.
+- [x] `app.js` — created on `rebuild/static-runtime`; browser validation pending.
+- [x] `styles.css` — created on `rebuild/static-runtime`; responsive validation pending.
 
-The local working directory has both files, but that does not make them available to GitHub Pages. Until both are committed to the repository root, the current `index.html` cannot load the application as written.
+The new files are available on the rebuild branch but are not yet on `main`. The current `index.html` can load them when that branch is checked out or previewed.
 
 The following local helper/asset files were also not found on GitHub at the time of verification:
 
@@ -456,8 +456,6 @@ No GitHub Actions workflow is required for this deployment method. Do not add a 
 
 ## 9. Status summary
 
-**The local project has a substantial first implementation:** all six top-level topic areas exist, the main calculators and studio presets are coded, the interface is styled, and the JavaScript passes a syntax check.
+**A first-pass runtime has now been reconstructed on `rebuild/static-runtime`.** It contains the six documented topic families and the initial calculators, but is not yet verified against the original source material or tested in a browser.
 
-**The GitHub repository is not yet a complete working deployment:** its current `index.html` points to `app.js` and `styles.css`, but those two files are absent from `main`. Browser verification, numerical regression checks, and GitHub Pages publication also remain outstanding.
-
-The most important next step is therefore not adding more features. It is publishing the existing runtime files and verifying that the current implementation actually runs from the repository.
+**The next step is validation, not merging blindly:** run syntax and browser checks, correct any defects, compare representative outputs with the studio material, then merge the reviewed branch to `main` and verify GitHub Pages.
