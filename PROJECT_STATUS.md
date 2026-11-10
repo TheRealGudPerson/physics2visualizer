@@ -500,4 +500,4 @@ No additional framework, build pipeline, backend, account system, or GitHub Acti
 
 The rebuild branch now includes the six main topic sections and the expanded calculator/study toolkit listed in Section 6.3. The README has been rewritten to document the implemented tools, assumptions, and limitations.
 
-The implementation work requested in this pass is complete on `rebuild/static-runtime`. Browser/course validation was intentionally skipped. The branch remains isolated from `main` in draft PR #1.
+The implementation work requested in this pass is complete on `rebuild/static-runtime`. Browser/course validation was intentionally skipped. The branch remains isolated from `main` in PR #1. Testing has been deferred at the user’s request.
