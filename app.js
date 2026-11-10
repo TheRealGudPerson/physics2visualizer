@@ -437,7 +437,7 @@
   };
   function showSolution() {
     const steps=solutionGuides[byId("solutionTopic").value]||[];
-    put("solutionSteps",'<ol class="solution-list">'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol>');
+    const listHtml='<ol class="solution-list">'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol>';put("solutionSteps",listHtml);put("printGuide",'<h1>Physics II · '+escapeHtml(topic.charAt(0).toUpperCase()+topic.slice(1))+' solution guide</h1>'+listHtml+'<p>Use the equation sheet and assigned problem data to complete each step.</p>');
   }
 
   const quizBank = [
