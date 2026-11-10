@@ -153,7 +153,7 @@
       result("singleFlux", "Flux per loop", "Wb") + result("fluxLinkage", "Flux linkage", "Wb-turn") + result("inducedEmf", "Induced emf magnitude", "V") + result("inducedCurrent", "Induced current magnitude", "A") +
       '<p class="readout-note">This model changes B while holding area and orientation fixed. The direction of induced current depends on whether flux is increasing or decreasing.</p>') +
       card("Studio 9 · rotating-coil alternator", "ROTATING COIL EXAMPLE",
-        field("alternatorTurns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 600, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
+        field("alternatorTurns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 3000, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
         result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T") + '<p class="readout-note">Studio 9 Problem 4: N = 250 turns, r = 5.0 cm, rotation = 1200 rpm, peak emf = 14 V. Solve B = εpeak/(Nπr²ω).</p>',
         button("Load example values", "preset-induction")) +
       concept("What does Lenz's law tell you?", "The induced current creates a magnetic field that opposes the change in magnetic flux that produced it. It does not necessarily oppose the original field itself.");
@@ -454,7 +454,13 @@
     {q:"A 12 V source is connected across 4 Ω. Find current in amperes.",a:3,u:"A",topic:"dc"},
     {q:"A 2 nC charge moves at 3 Mm/s perpendicular to a 0.5 T field. Find force in mN.",a:3,u:"mN",topic:"magnetic"},
     {q:"A 50-turn coil of area 0.01 m² has dB/dt = 0.2 T/s. Find emf in volts.",a:.1,u:"V",topic:"induction"},
-    {q:"A series RLC has L = 0.1 H and C = 10 µF. Find resonant frequency in hertz.",a:159.154943,u:"Hz",topic:"ac"}
+    {q:"A series RLC has L = 0.1 H and C = 10 µF. Find resonant frequency in hertz.",a:159.154943,u:"Hz",topic:"ac"},
+    {q:"Studio 6: C₁ = 3 µF and C₂ = 6 µF are in series; that pair is parallel with C₃ = 4 µF; the result is in series with C₄ = 12 µF. Find Ceq in µF.",a:4,u:"µF",topic:"studio 6"},
+    {q:"Studio 7: a 240 V motor is 90% efficient and lifts 200 N at 3.1 m/s. Find its current in amperes.",a:2.87037037,u:"A",topic:"studio 7"},
+    {q:"Studio 7: 2.0 µF at 150 V is connected to an uncharged 1.0 µF capacitor. Find the final voltage in volts.",a:100,u:"V",topic:"studio 7"},
+    {q:"Studio 8: q = e, B = 0.300 T, x = 0.300 m, Vacc = 3.20 kV. Find the ion mass in atomic mass units.",a:30.5,u:"u",topic:"studio 8"},
+    {q:"Studio 9: Q = 5.88 A/s, R = 1.66 cm, b = 1.36 cm, and loop resistance = 2.79 Ω. Find induced current in nA.",a:13.1663563,u:"nA",topic:"studio 9"},
+    {q:"Studio 10: R = 50 Ω, L = 1.0 mH, C = 10 nF. Find resonant frequency in kHz.",a:50.329212,u:"kHz",topic:"studio 10"}
   ];
   let activeQuestion=null,quizCorrect=0,quizAttempted=0;
   function newQuestion(){activeQuestion=quizBank[Math.floor(Math.random()*quizBank.length)];put("quizPrompt",'<strong>'+activeQuestion.topic.toUpperCase()+'</strong><br>'+activeQuestion.q);byId("quizAnswer").value="";put("quizFeedback","");}
