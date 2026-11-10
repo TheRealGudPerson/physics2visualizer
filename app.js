@@ -349,5 +349,113 @@
     if (currentTopic === "ac") update();
   });
 
+
+  // Extended calculators and local study tools.
+  const studyLab = document.getElementById("studyLab");
+  const byId = id => document.getElementById(id);
+  const val = id => Number(byId(id)?.value ?? 0);
+  const put = (id, html) => { const el = byId(id); if (el) el.innerHTML = html; };
+  const num = (x, digits = 4) => Number.isFinite(x) ? Number(x.toPrecision(digits)).toLocaleString(undefined, { maximumSignificantDigits: digits }) : "undefined";
+  const row = (label, value, unit = "") => '<div class="study-result-row"><span>' + label + '</span><strong>' + value + ' ' + unit + '</strong></div>';
+  const safeStore = {
+    read(key, fallback) { try { return JSON.parse(localStorage.getItem("physics2v-" + key)) ?? fallback; } catch { return fallback; } },
+    write(key, value) { try { localStorage.setItem("physics2v-" + key, JSON.stringify(value)); return true; } catch { return false; } }
+  };
+
+  function drawSeries(canvasId, series, labels) {
+    const canvas = byId(canvasId); if (!canvas) return;
+    const rect = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    const w = Math.max(300, Math.floor((rect.width || 520) * dpr)), h = Math.max(160, Math.floor(210 * dpr));
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d"), pad = 34 * dpr, right = w - 12 * dpr, top = 14 * dpr, bottom = h - 25 * dpr;
+    const css = getComputedStyle(document.body);
+    const colors = ["--accent", "--accent-2", "--warm", "--muted"].map(k => css.getPropertyValue(k).trim());
+    ctx.clearRect(0,0,w,h); ctx.strokeStyle = css.getPropertyValue("--line").trim(); ctx.lineWidth = dpr;
+    for (let j=0;j<5;j++) { const y=top+(bottom-top)*j/4; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(right,y);ctx.stroke(); }
+    const maxAbs = Math.max(1e-12, ...series.flatMap(s => s.values.map(Math.abs)));
+    series.forEach((s,i) => {
+      ctx.beginPath();
+      s.values.forEach((v,j) => { const x=pad+(right-pad)*j/(s.values.length-1), y=top+(bottom-top)*(0.5-v/(2*maxAbs)); if(j===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
+      ctx.strokeStyle=colors[i%colors.length] || "#8aa8ff";ctx.lineWidth=2*dpr;ctx.stroke();
+    });
+    ctx.fillStyle=css.getPropertyValue("--muted").trim();ctx.font=(10*dpr)+"px system-ui";
+    ctx.fillText(labels?.[0] || "0",pad,bottom+17*dpr);ctx.fillText(labels?.[1] || "time",right-35*dpr,bottom+17*dpr);
+  }
+
+  function updateStudyModels() {
+    const r1=val("builderR1"),r2=val("builderR2"),r3=val("builderR3"),vs=val("builderV");
+    if(r1>0&&r2>0&&r3>0){const rp=r2*r3/(r2+r3),rt=r1+rp,i=vs/rt,vp=i*rp;put("builderResult",row("Parallel equivalent",num(rp),"Ω")+row("Total resistance",num(rt),"Ω")+row("Source current",num(i),"A")+row("Parallel branch voltage",num(vp),"V")+row("Branch currents",num(vp/r2)+" A + "+num(vp/r3),""));}
+    const li=val("lineI"),lr=val("lineR"),lv=val("lineV");
+    put("lineResult",row("Line voltage drop",num(li*lr),"V")+row("Line power loss",num(li*li*lr),"W")+row("Load-side voltage",num(lv-li*lr),"V")+row("Supply voltage lost",num(lv>0?100*li*lr/lv:NaN),"%"));
+    const mv=val("motorV"),mi=val("motorI"),mt=val("motorT"),rpm=val("motorRPM"),pin=mv*mi,omega=rpm*2*Math.PI/60,pout=mt*omega;
+    put("motorResult",row("Electrical input",num(pin),"W")+row("Mechanical output",num(pout),"W")+row("Efficiency",num(pin>0?100*pout/pin:NaN),"%")+row("Input minus output",num(pin-pout),"W"));
+    const c1=val("shareC1")*1e-6,c2=val("shareC2")*1e-6,v1=val("shareV1"),v2=val("shareV2"),vf=(c1*v1+c2*v2)/(c1+c2),ei=.5*c1*v1*v1+.5*c2*v2*v2,ef=.5*(c1+c2)*vf*vf;
+    put("shareResult",row("Final common voltage",num(vf),"V")+row("Initial total charge",num(c1*v1+c2*v2,5),"C")+row("Initial energy",num(ei*1e6),"µJ")+row("Final energy",num(ef*1e6),"µJ")+row("Energy converted to other forms",num((ei-ef)*1e6),"µJ"));
+    const tr=val("transR"),tc=val("transC")*1e-6,tl=val("transL")*1e-3,tv=val("transV"),tt=val("transT")*1e-3,tauRC=tr*tc,tauRL=tl/tr,vc=tv*(1-Math.exp(-tt/tauRC)),irc=tv/tr*Math.exp(-tt/tauRC),il=tv/tr*(1-Math.exp(-tt/tauRL));
+    put("transResult",row("RC time constant",num(tauRC*1e3),"ms")+row("Capacitor voltage",num(vc),"V")+row("RC charging current",num(irc*1e3),"mA")+row("RL time constant",num(tauRL*1e3),"ms")+row("RL inductor current",num(il*1e3),"mA"));
+    const tmax=Math.max(5*tauRC,5*tauRL,1e-9),ts=Array.from({length:121},(_,i)=>tmax*i/120);
+    drawSeries("transientGraph",[{values:ts.map(t=>tv*(1-Math.exp(-t/tauRC)))},{values:ts.map(t=>tv*(1-Math.exp(-t/tauRL)))}],["0","5τ"]);
+    const wr=val("waveR"),wl=val("waveL")*1e-3,wc=val("waveC")*1e-6,wv=val("waveV"),wf=val("waveF"),ww=2*Math.PI*wf,wxl=ww*wl,wxc=1/(ww*wc),wz=Math.sqrt(wr*wr+(wxl-wxc)**2),wi=wv/wz,wphi=Math.atan2(wxl-wxc,wr),period=1/wf;
+    put("waveResult",row("Peak current",num(wi),"A")+row("Phase angle",num(wphi*180/Math.PI),"°")+row("Peak resistor voltage",num(wi*wr),"V")+row("Peak inductor voltage",num(wi*wxl),"V")+row("Peak capacitor voltage",num(wi*wxc),"V"));
+    const times=Array.from({length:241},(_,i)=>period*i/240),wave=(amp,phase)=>times.map(t=>amp*Math.sin(ww*t+phase));
+    drawSeries("waveGraph",[{values:wave(wv,0)},{values:wave(wi*wr,-wphi)},{values:wave(wi*wxl,Math.PI/2-wphi)},{values:wave(wi*wxc,-Math.PI/2-wphi)}],["0","one period"]);
+    const mu0=4*Math.PI*1e-7,fi=val("fieldI"),fr=val("fieldR")/100,fn=val("fieldN"),fRad=val("fieldRadius")/100;
+    put("fieldResult",row("Long straight wire",num(mu0*fi/(2*Math.PI*fr)*1e6),"µT")+row("Circular coil center",num(mu0*fn*fi/(2*fRad)*1e6),"µT"));
+    const oq=val("orbitQ")*1e-9,om=val("orbitM")*1e-9,ov=val("orbitV")*1e3,ob=val("orbitB")*1e-3,orbitR=om*ov/(oq*ob),orbitPeriod=2*Math.PI*om/(oq*ob);
+    put("orbitResult",row("Orbit radius",num(orbitR*100),"cm")+row("Cyclotron period",num(orbitPeriod*1e6),"µs")+row("Cyclotron frequency",num(1/orbitPeriod),"Hz"));
+    const oc=byId("orbitGraph"); if(oc){const cx=oc.getContext("2d"),d=window.devicePixelRatio||1,w=oc.clientWidth||440,h=180;oc.width=w*d;oc.height=h*d;cx.scale(d,d);cx.clearRect(0,0,w,h);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--line");cx.beginPath();cx.moveTo(w/2,8);cx.lineTo(w/2,h-8);cx.stroke();const rr=Math.min(65,Math.max(8,orbitR*1000));cx.beginPath();cx.arc(w/2,h/2,rr,0,2*Math.PI);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--accent");cx.lineWidth=2;cx.stroke();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--accent-2");cx.beginPath();cx.arc(w/2+rr,h/2,4,0,2*Math.PI);cx.fill();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--muted");cx.fillText("schematic orbit (not to scale)",10,h-10);}
+    const gn=val("genN"),gb=val("genB"),ga=val("genA")*1e-4,gw=val("genRPM")*2*Math.PI/60,gflux=gb*ga,gemf=gn*gb*ga*gw;
+    put("genResult",row("Maximum flux per turn",num(gflux),"Wb")+row("Peak induced emf",num(gemf),"V")+row("Angular speed",num(gw),"rad/s"));
+    const gt=Array.from({length:241},(_,i)=>i/240*(gw>0?2*Math.PI/gw:1)),phase=gt.map(t=>gw*t);
+    drawSeries("genGraph",[{values:phase.map(p=>gflux*Math.cos(p))},{values:phase.map(p=>gemf*Math.sin(p))}],["0","one rotation"]);
+  }
+
+  const solutionGuides = {
+    energy:["Identify the system and choose the interval.","Convert quantities to SI units.","Use K = ½mv² or W = Fd cos θ as appropriate.","Apply W_net = ΔK when using the work-energy theorem.","Check the sign of work and units of joules."],
+    capacitors:["Redraw the network and identify series and parallel groups.","Reduce parallel groups with C_eq = ΣC and series groups with 1/C_eq = Σ(1/C).","Use Q = C_eq V_source for the equivalent network.","In series, charge magnitude is common; in parallel, voltage is common.","Check charge conservation, voltage sums, and U = ½CV²."],
+    dc:["Redraw the circuit and label currents and voltage polarities.","Reduce series and parallel resistors where possible.","Include battery internal resistance in series with the external equivalent.","Use Ohm's law and Kirchhoff's junction/loop rules.","Check KCL, KVL, and power balance."],
+    magnetic:["Identify whether the object is a charge or current-carrying wire.","Use F = |q|vB sin θ or F = IℓB sin θ with SI units.","Use the right-hand rule for v × B or Iℓ × B; reverse direction for negative charge.","For circular motion, set |q|vB = mv²/r.","Check that force vanishes when motion/current is parallel to the field."],
+    induction:["Choose a surface and define its area normal.","Calculate Φ_B = BA cos θ and flux linkage NΦ_B.","Find the rate of change of flux; ε = |−N dΦ_B/dt|.","Use Lenz's law to oppose the change in flux.","If resistance is present, use I = ε/R and check units."],
+    ac:["Convert frequency to ω = 2πf and component values to SI units.","Calculate X_L = ωL and X_C = 1/(ωC).","Find Z = √(R² + (X_L − X_C)²) and phase angle.","Use peak or RMS values consistently.","At resonance X_L = X_C and f₀ = 1/(2π√LC)."]
+  };
+  function showSolution() {
+    const steps=solutionGuides[byId("solutionTopic").value]||[];
+    put("solutionSteps",'<ol class="solution-list">'+steps.map(x=>'<li>'+x+'</li>').join("")+'</ol>');
+  }
+
+  const quizBank = [
+    {q:"A 2 kg object moves at 3 m/s. Find kinetic energy in joules.",a:9,u:"J",topic:"energy"},
+    {q:"A 5 µF capacitor is connected to 12 V. Find charge in µC.",a:60,u:"µC",topic:"capacitors"},
+    {q:"A 12 V source is connected across 4 Ω. Find current in amperes.",a:3,u:"A",topic:"dc"},
+    {q:"A 2 nC charge moves at 3 Mm/s perpendicular to a 0.5 T field. Find force in mN.",a:3,u:"mN",topic:"magnetic"},
+    {q:"A 50-turn coil of area 0.01 m² has dB/dt = 0.2 T/s. Find emf in volts.",a:.1,u:"V",topic:"induction"},
+    {q:"A series RLC has L = 0.1 H and C = 10 µF. Find resonant frequency in hertz.",a:159.154943,u:"Hz",topic:"ac"}
+  ];
+  let activeQuestion=null,quizCorrect=0,quizAttempted=0;
+  function newQuestion(){activeQuestion=quizBank[Math.floor(Math.random()*quizBank.length)];put("quizPrompt",'<strong>'+activeQuestion.topic.toUpperCase()+'</strong><br>'+activeQuestion.q);byId("quizAnswer").value="";put("quizFeedback","");}
+  function checkQuestion(){if(!activeQuestion)return;const answer=Number(byId("quizAnswer").value),correct=Number.isFinite(answer)&&byId("quizAnswer").value.trim()!==""&&Math.abs(answer-activeQuestion.a)<=.02*Math.max(1,Math.abs(activeQuestion.a));quizAttempted++;if(correct)quizCorrect++;put("quizFeedback",correct?'<span class="study-correct">Correct.</span> '+num(activeQuestion.a)+' '+activeQuestion.u:'<span class="study-incorrect">Not quite.</span> Expected '+num(activeQuestion.a)+' '+activeQuestion.u+'.');put("quizScore","Score: "+quizCorrect+" / "+quizAttempted);}
+
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function renderSavedData(){
+    const notes=safeStore.read("notes",[]),bookmarks=safeStore.read("bookmarks",[]),completed=safeStore.read("completed",[]);
+    const noteHtml=notes.map((n,i)=>'<div class="saved-item"><strong>'+escapeHtml(n.title||"Untitled")+'</strong> <small>'+escapeHtml(n.topic)+'</small><p>'+escapeHtml(n.body)+'</p><button class="small-button" data-delete-note="'+i+'" type="button">Delete</button></div>').join("");
+    put("savedStudyData",'<p><strong>Bookmarks:</strong> '+(bookmarks.map(escapeHtml).join(", ")||"None")+'<br><strong>Completed topics:</strong> '+(completed.map(escapeHtml).join(", ")||"None")+'</p>'+(noteHtml||"<p>No notes saved yet.</p>"));
+  }
+  function saveNote(){const notes=safeStore.read("notes",[]);notes.unshift({topic:byId("saveTopic").value,title:byId("noteTitle").value.trim(),body:byId("studyNote").value.trim(),created:new Date().toISOString()});if(!safeStore.write("notes",notes)){put("savedStudyData","Local storage is unavailable in this browser.");return;}byId("noteTitle").value="";byId("studyNote").value="";renderSavedData();}
+  function toggleSavedList(key,value){const items=safeStore.read(key,[]),next=items.includes(value)?items.filter(x=>x!==value):items.concat(value);safeStore.write(key,next);renderSavedData();}
+  function deleteNote(i){const notes=safeStore.read("notes",[]);notes.splice(i,1);safeStore.write("notes",notes);renderSavedData();}
+
+  byId("solutionTopic").addEventListener("change",showSolution);
+  byId("printSolution").addEventListener("click",()=>window.print());
+  byId("newQuestion").addEventListener("click",newQuestion);
+  byId("checkAnswer").addEventListener("click",checkQuestion);
+  byId("saveNote").addEventListener("click",saveNote);
+  byId("bookmarkTopic").addEventListener("click",()=>toggleSavedList("bookmarks",byId("saveTopic").value));
+  byId("markComplete").addEventListener("click",()=>toggleSavedList("completed",byId("saveTopic").value));
+  byId("savedStudyData").addEventListener("click",e=>{const b=e.target.closest("[data-delete-note]");if(b)deleteNote(Number(b.dataset.deleteNote));});
+  studyLab.addEventListener("input",updateStudyModels);
+  studyLab.addEventListener("change",updateStudyModels);
+  showSolution();renderSavedData();updateStudyModels();newQuestion();
+
   render();
 })();
