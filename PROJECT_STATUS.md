@@ -4,7 +4,7 @@
 **Primary branch:** `main`  
 **Project type:** Static, browser-based Physics II study application  
 **Course context:** PHY2049C  
-**Status (2026-11-10):** The reconstructed application and expanded study toolkit are implemented on `rebuild/static-runtime` and included in draft PR #1. The branch is not merged to `main`. Browser and course-answer-key testing have been explicitly deferred at the user’s request.
+**Status (2026-11-10):** The reconstructed application and expanded study toolkit are implemented on `rebuild/static-runtime` and included in PR #1, which is open and ready for review. The branch is not merged to `main`. Browser and course-answer-key testing have been explicitly deferred at the user’s request.
 
 This document describes the intended purpose of the project, what is implemented in the local source, what is currently present in the GitHub repository, and what remains unfinished. It is deliberately explicit about the difference between a feature existing in the local working files and that feature being available from the published repository.
 
@@ -392,8 +392,8 @@ The syntax check only confirms that the JavaScript parses. It does **not** estab
 
 At the time of the initial status review, the GitHub `main` branch contained `README.md` and `index.html`, but the required runtime files were absent. They have since been created on `rebuild/static-runtime` (not yet merged to `main`):
 
-- [x] `app.js` — created on `rebuild/static-runtime`; browser validation pending.
-- [x] `styles.css` — created on `rebuild/static-runtime`; responsive validation pending.
+- [x] `app.js` — created on `rebuild/static-runtime`; browser validation intentionally deferred.
+- [x] `styles.css` — created on `rebuild/static-runtime`; responsive validation intentionally deferred.
 
 The new files are available on the rebuild branch but are not yet on `main`. The current `index.html` can load them when that branch is checked out or previewed.
 
@@ -490,7 +490,7 @@ The user has asked to skip testing and have all other implementation work comple
 1. Configure GitHub Pages to deploy `main` from `/(root)` after the pull request is accepted.
 2. Browser testing, responsive testing, accessibility review, and cross-browser checks have been deferred.
 3. Validate the illustrative values against the official Studio 6–10 worksheets if those materials are later made available.
-4. Merge PR #1 when the user is ready. It remains a draft and has not been merged.
+4. Merge PR #1 when the user is ready. It is ready for review but has not been merged.
 
 No additional framework, build pipeline, backend, account system, or GitHub Actions workflow is needed.
 
