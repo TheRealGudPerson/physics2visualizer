@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
-  <meta name="description" content="An interactive Physics II equation visualizer for work, capacitors, DC circuits, magnetic forces, induction, and AC resonance.">
+  <meta name="description" content="An interactive Physics II study workspace with circuit, magnetic field, induction, AC, and practice tools.">
   <title>Physics II Visualizer</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
@@ -35,7 +35,7 @@
         </nav>
         <div class="sidebar-note">
           <span class="note-dot"></span>
-          <p><strong>How to use this</strong><br>Change a value, watch the diagram and results update, then try the studio example.</p>
+          <p><strong>How to use this</strong><br>Change a value, watch the results update, then try an example network.</p>
         </div>
         <p class="sidebar-foot">Built from the equation sheet and Studio 6–10 materials.</p>
       </aside>
@@ -53,6 +53,223 @@
           </select>
         </div>
         <div id="panel" aria-live="polite"></div>
+
+        <section class="study-lab" id="studyLab" aria-labelledby="studyLabTitle">
+          <div class="study-heading">
+            <p class="eyebrow">EXTENDED TOOLKIT</p>
+            <h2 id="studyLabTitle">More Physics II models</h2>
+            <p class="hero-copy">Additional circuit, induction, and magnetic-field models, plus study tools. All values are calculated locally in this browser.</p>
+          </div>
+
+          <div class="study-grid">
+            <article class="study-card">
+              <p class="card-kicker">CIRCUIT ANALYSIS</p><h3>Resistor network builder</h3>
+              <p class="study-description">Compare series, parallel, and series-plus-parallel resistor topologies.</p>
+              <label class="study-select-label" for="builderTopology">Connection</label><select id="builderTopology"><option value="mixed">R₁ in series with R₂ ‖ R₃</option><option value="series">R₁ + R₂ + R₃ in series</option><option value="parallel">R₁ ‖ R₂ ‖ R₃ in parallel</option></select>
+              <div class="study-fields">
+                <label>Series R₁ <input id="builderR1" type="number" min="0.001" step="any" value="100"></label>
+                <label>Parallel R₂ <input id="builderR2" type="number" min="0.001" step="any" value="220"></label>
+                <label>Parallel R₃ <input id="builderR3" type="number" min="0.001" step="any" value="330"></label>
+                <label>Source voltage <input id="builderV" type="number" min="0" step="any" value="12"></label>
+              </div>
+              <div class="study-output" id="builderResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">TRANSMISSION LINES</p><h3>Line loss calculator</h3>
+              <p class="study-description">Studio 6 Problem 3: Pcity = 100 MW, Vcity = 50 kV, and each of two lines has Rline = 2 Ω. Enter I = Pcity/Vcity = 2000 A and combined resistance 2Rline = 4 Ω. The result reports total line loss and system efficiency.</p>
+              <div class="study-fields">
+                <label>Load current (A) <input id="lineI" type="number" min="0" step="any" value="2000"></label>
+                <label>Loop resistance (Ω) <input id="lineR" type="number" min="0" step="any" value="4"></label>
+                <label>Supply voltage (V) <input id="lineV" type="number" min="0" step="any" value="50000"></label>
+              </div>
+              <div class="study-output" id="lineResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">STUDIO 6 · RESISTIVITY</p><h3>Heating element and connecting-wire losses</h3>
+              <p class="study-description">Studio 6 Problem 2: a copper element is connected in series with the two leads. The lead length is the combined length of both cables.</p>
+              <div class="study-fields">
+                <label>Supply voltage (V) <input id="s6HeatV" type="number" min="0" step="any" value="24"></label>
+                <label>Element length (m) <input id="s6HeatL" type="number" min="0.001" step="any" value="0.05"></label>
+                <label>Element radius (mm) <input id="s6HeatRadius" type="number" min="0.001" step="any" value="0.50"></label>
+                <label>Element resistivity (Ω·m) <input id="s6HeatRho" type="number" min="0.000000000001" step="any" value="0.000000017"></label>
+                <label>Total lead length (m) <input id="s6LineL" type="number" min="0.001" step="any" value="20"></label>
+                <label>Lead area (mm²) <input id="s6LineA" type="number" min="0.001" step="any" value="2.5"></label>
+                <label>Lead resistivity (Ω·m) <input id="s6LineRho" type="number" min="0.000000000001" step="any" value="0.000000028"></label>
+              </div>
+              <div class="study-output" id="s6HeatResult" aria-live="polite"></div>
+              <p class="study-description">Use Rh = ρL/(πr²), Rline = ρlineLline/Aline, I = V/(Rh + Rline), and P = I²R. Convert mm and mm² to SI units before substituting.</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">ELECTRIC MOTORS</p><h3>Motor efficiency</h3>
+              <p class="study-description">Studio 7 Problem 1: a 240 V motor is 90% efficient and lifts a 200 N weight at 3.1 m/s. Find the electrical current from Pout = Fv and η = Pout/Pin.</p>
+              <div class="study-fields">
+                <label>Supply voltage (V) <input id="motorV" type="number" min="0" step="any" value="240"></label>
+                <label>Efficiency (%) <input id="motorEff" type="number" min="0.1" max="100" step="any" value="90"></label>
+                <label>Lifted weight (N) <input id="motorWeight" type="number" min="0" step="any" value="200"></label>
+                <label>Lift speed (m/s) <input id="motorSpeed" type="number" min="0" step="any" value="3.1"></label>
+              </div>
+              <div class="study-output" id="motorResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">CAPACITORS</p><h3>Charge sharing</h3>
+              <p class="study-description">Studio 7 Problem 4: 2.0 µF initially at 150 V is connected to an initially uncharged 1.0 µF capacitor. The final common voltage follows charge conservation; the energy difference is dissipated in the 2.2 kΩ resistor.</p>
+              <div class="study-fields">
+                <label>Initial capacitor C₁ (µF) <input id="shareC1" type="number" min="0.001" step="any" value="2"></label>
+                <label>Initial voltage V₁ (V) <input id="shareV1" type="number" step="any" value="150"></label>
+                <label>Capacitor C₂ (µF) <input id="shareC2" type="number" min="0.001" step="any" value="1"></label>
+                <label>Initial voltage V₂ (V) <input id="shareV2" type="number" step="any" value="0"></label>
+              </div>
+              <div class="study-output" id="shareResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">TRANSIENT RESPONSE</p><h3>RC and RL circuits</h3>
+              <div class="study-fields">
+                <label>Resistance (Ω) <input id="transR" type="number" min="0.001" step="any" value="1000"></label>
+                <label>Capacitance (µF) <input id="transC" type="number" min="0.001" step="any" value="100"></label>
+                <label>Inductance (mH) <input id="transL" type="number" min="0.001" step="any" value="100"></label>
+                <label>Source voltage (V) <input id="transV" type="number" min="0" step="any" value="5"></label>
+                <label>Elapsed time (ms) <input id="transT" type="number" min="0" step="any" value="100"></label>
+              </div>
+              <div class="study-output" id="transResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="transientGraph" aria-label="Normalized RC capacitor charging and RL inductor current growth graphs"></canvas>
+              <div class="study-legend"><span>RC capacitor voltage</span><span>RL inductor current</span></div>
+              <p class="study-description">The graph shows normalized responses: 1 − e⁻ᵗ/ᴿᶜ for RC voltage and 1 − e⁻ᵗᴿ/ᴸ for RL current. The readouts show physical values.</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">AC WAVEFORMS</p><h3>Time-domain series-RLC voltages</h3>
+              <div class="study-fields">
+                <label>R (Ω) <input id="waveR" type="number" min="0.001" step="any" value="100"></label>
+                <label>L (mH) <input id="waveL" type="number" min="0.001" step="any" value="50"></label>
+                <label>C (µF) <input id="waveC" type="number" min="0.001" step="any" value="10"></label>
+                <label>Source peak (V) <input id="waveV" type="number" min="0" step="any" value="12"></label>
+                <label>Frequency (Hz) <input id="waveF" type="number" min="0.001" step="any" value="1000"></label>
+              </div>
+              <div class="study-output" id="waveResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="waveGraph" aria-label="Source, resistor, inductor, and capacitor voltage waveforms"></canvas>
+              <div class="study-legend"><span>Source</span><span>Resistor</span><span>Inductor</span><span>Capacitor</span></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">MAGNETIC FIELDS</p><h3>Biot–Savart / Ampère models</h3>
+              <div class="study-fields">
+                <label>Current (A) <input id="fieldI" type="number" step="any" value="5"></label>
+                <label>Distance (cm) <input id="fieldR" type="number" min="0.001" step="any" value="2"></label>
+                <label>Turns (N) <input id="fieldN" type="number" min="1" step="1" value="20"></label>
+                <label>Loop radius (cm) <input id="fieldRadius" type="number" min="0.001" step="any" value="10"></label>
+                <label>Finite wire angle θ₁ (°) <input id="fieldTheta1" type="number" min="-90" max="90" step="any" value="45"></label>
+                <label>Finite wire angle θ₂ (°) <input id="fieldTheta2" type="number" min="-90" max="90" step="any" value="45"></label>
+              </div>
+              <div class="study-output" id="fieldResult" aria-live="polite"></div>
+              <p class="study-description">The finite-wire model uses B = µ₀I(sin θ₁ + sin θ₂)/(4πr), with angles measured from the perpendicular to the wire. The infinite-wire result follows Ampère’s law; the loop model is for the field at its center.</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">PARTICLE MOTION</p><h3>Charged-particle orbit</h3>
+              <div class="study-fields">
+                <label>Charge magnitude (nC) <input id="orbitQ" type="number" min="0.001" step="any" value="1.6"></label>
+                <label>Mass (µg) <input id="orbitM" type="number" min="0.001" step="any" value="1"></label>
+                <label>Speed (km/s) <input id="orbitV" type="number" min="0" step="any" value="50"></label>
+                <label>Magnetic field (mT) <input id="orbitB" type="number" min="0.001" step="any" value="20"></label>
+              </div>
+              <div class="study-output" id="orbitResult" aria-live="polite"></div>
+              <canvas class="study-canvas orbit-canvas" id="orbitGraph" aria-label="Schematic circular charged-particle path"></canvas>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">ELECTROMAGNETIC INDUCTION</p><h3>Rotating-coil generator</h3>
+              <div class="study-fields">
+                <label>Turns (N) <input id="genN" type="number" min="1" step="1" value="100"></label>
+                <label>Field (T) <input id="genB" type="number" min="0" step="any" value="0.5"></label>
+                <label>Coil area (cm²) <input id="genA" type="number" min="0" step="any" value="100"></label>
+                <label>Rotation (rpm) <input id="genRPM" type="number" min="0" step="any" value="600"></label>
+              </div>
+              <div class="study-output" id="genResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="genGraph" aria-label="Rotating-coil magnetic flux and induced emf waveforms with a moving phase marker"></canvas>
+              <div class="study-legend"><span>Normalized flux</span><span>Normalized emf</span></div>
+              <p class="study-description">Both waveforms are normalized to show their phase relationship; peak flux and peak emf are listed separately above. The marker follows the emf phase.</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">STUDIO 9 · FARADAY & LENZ</p><h3>Straight-wire current inducing loop current</h3>
+              <p class="study-description">Studio 9 Problem 3: a long straight wire carries I(t) = Qt beside a circular loop. The loop's nearest edge is b from the wire.</p>
+              <div class="study-fields">
+                <label>Current slope Q (A/s) <input id="s9Q" type="number" step="any" value="5.88"></label>
+                <label>Loop radius R (cm) <input id="s9Radius" type="number" min="0.001" step="any" value="1.66"></label>
+                <label>Nearest edge distance b (cm) <input id="s9B" type="number" min="0.001" step="any" value="1.36"></label>
+                <label>Loop resistance (Ω) <input id="s9Resistance" type="number" min="0.001" step="any" value="2.79"></label>
+              </div>
+              <div class="study-output" id="s9Result" aria-live="polite"></div>
+              <p class="study-description">For d = b + R, |ε| = μ₀Q[d − √(d² − R²)] and Iind = |ε|/Rloop. For the worksheet's current direction, Lenz's law gives clockwise induced current.</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">STUDIO 10 · AC CIRCUITS</p><h3>RC, RL, and series-RLC worksheet values</h3>
+              <p class="study-description">The controls below start with the values in Recitation 10. Change them to explore how reactance, impedance, phase, current, and power respond.</p>
+              <div class="study-fields">
+                <label>RC resistance (Ω) <input id="s10RcR" type="number" min="0.001" step="any" value="50"></label>
+                <label>RC capacitance (µF) <input id="s10RcC" type="number" min="0.001" step="any" value="50"></label>
+                <label>RC angular frequency (rad/s) <input id="s10RcW" type="number" min="0.001" step="any" value="376.991118"></label>
+                <label>RC peak voltage (V) <input id="s10RcV" type="number" min="0" step="any" value="120"></label>
+                <label>RL resistance (Ω) <input id="s10RlR" type="number" min="0.001" step="any" value="100"></label>
+                <label>RL inductance (H) <input id="s10RlL" type="number" min="0.001" step="any" value="0.25"></label>
+                <label>RL angular frequency (rad/s) <input id="s10RlW" type="number" min="0.001" step="any" value="1000"></label>
+                <label>RL peak voltage (V) <input id="s10RlV" type="number" min="0" step="any" value="10"></label>
+              </div>
+              <div class="study-output" id="s10Result" aria-live="polite"></div>
+              <p class="study-description">The RC worksheet gives φ ≈ −46.7°, I₀ ≈ 1.65 A, Irms ≈ 1.16 A, power factor ≈ 0.686, and Pavg ≈ 67.3 W. The RL worksheet gives φ ≈ +68.2°, I₀ ≈ 0.0371 A, and power factor ≈ 0.371. The series-RLC example above covers Problem 3.</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">STUDY WORKFLOW</p><h3>Step-by-step solution guide</h3>
+              <label class="study-select-label" for="solutionTopic">Choose a topic</label>
+              <select id="solutionTopic">
+                <option value="energy">Work & energy</option><option value="capacitors">Capacitors</option>
+                <option value="dc">DC circuits</option><option value="magnetic">Magnetic force</option>
+                <option value="induction">Induction</option><option value="ac">AC circuits</option>
+              </select>
+              <div class="study-output" id="solutionSteps" aria-live="polite"></div>
+              <button class="small-button" id="printSolution" type="button">Print / save worked guide</button>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">PRACTICE</p><h3>Randomized question</h3>
+              <p id="quizPrompt" class="study-description">Generate a question to practice one of the core relationships.</p>
+              <button class="small-button" id="newQuestion" type="button">New question</button>
+              <div class="study-fields quiz-answer-row">
+                <label>Your numerical answer <input id="quizAnswer" type="number" step="any" placeholder="Enter a value"></label>
+                <button class="small-button" id="checkAnswer" type="button">Check</button>
+              </div>
+              <div class="study-output" id="quizFeedback" aria-live="polite"></div>
+              <p class="study-description" id="quizScore">Score: 0 / 0</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">LOCAL STUDY DATA</p><h3>Bookmarks, notes & progress</h3>
+              <p class="study-description">Saved only in this browser using local storage. No account or server is involved.</p>
+              <div class="study-fields">
+                <label>Current topic
+                  <select id="saveTopic"><option value="energy">Work & energy</option><option value="capacitors">Capacitors</option><option value="dc">DC circuits</option><option value="magnetic">Magnetic force</option><option value="induction">Induction</option><option value="ac">AC & resonance</option></select>
+                </label>
+                <label>Note title <input id="noteTitle" type="text" maxlength="80" placeholder="e.g. Remember sign convention"></label>
+              </div>
+              <label class="study-note-label" for="studyNote">Your note</label>
+              <textarea id="studyNote" rows="3" maxlength="2000" placeholder="Write a reminder or a worked step..."></textarea>
+              <div class="study-actions">
+                <button class="small-button" id="saveNote" type="button">Save note</button>
+                <button class="small-button" id="bookmarkTopic" type="button">Bookmark topic</button>
+                <button class="small-button" id="markComplete" type="button">Mark topic complete</button>
+              </div>
+              <div class="study-output" id="savedStudyData" aria-live="polite"></div>
+            </article>
+          </div>
+        </section>
+        <section id="printGuide" class="print-guide" aria-label="Printable step-by-step solution guide"></section>
         <footer class="page-footer">
           <span>Physics II Visualizer</span>
           <span>All calculations run in your browser · No account or backend</span>
