@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="An interactive Physics II equation visualizer for work, capacitors, DC circuits, magnetic forces, induction, and AC resonance.">
+  <title>Physics II Visualizer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Physics II Visualizer home">
+        <span class="brand-mark">Φ</span>
+        <span><strong>Physics II</strong><small>Equation visualizer</small></span>
+      </a>
+      <div class="topbar-right">
+        <span class="course-tag">PHY2049C · STUDY MODE</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">◐</button>
+      </div>
+    </header>
+
+    <div class="workspace" id="top">
+      <aside class="sidebar" aria-label="Equation topics">
+        <p class="sidebar-label">EQUATION MAP</p>
+        <nav id="topicNav">
+          <button class="nav-item active" data-topic="energy" type="button"><span class="nav-index">01</span><span><strong>Work & energy</strong><small>Kinetic energy · work</small></span></button>
+          <button class="nav-item" data-topic="capacitors" type="button"><span class="nav-index">02</span><span><strong>Capacitors</strong><small>Charge · voltage · energy</small></span></button>
+          <button class="nav-item" data-topic="dc" type="button"><span class="nav-index">03</span><span><strong>DC circuits</strong><small>Ohm · power · Kirchhoff</small></span></button>
+          <button class="nav-item" data-topic="magnetic" type="button"><span class="nav-index">04</span><span><strong>Magnetic force</strong><small>Particles · wires · motion</small></span></button>
+          <button class="nav-item" data-topic="induction" type="button"><span class="nav-index">05</span><span><strong>Flux & induction</strong><small>Faraday · Lenz · coils</small></span></button>
+          <button class="nav-item" data-topic="ac" type="button"><span class="nav-index">06</span><span><strong>AC & resonance</strong><small>Reactance · impedance · RMS</small></span></button>
+        </nav>
+        <div class="sidebar-note">
+          <span class="note-dot"></span>
+          <p><strong>How to use this</strong><br>Change a value, watch the diagram and results update, then try the studio example.</p>
+        </div>
+        <p class="sidebar-foot">Built from the equation sheet and Studio 6–10 materials.</p>
+      </aside>
+
+      <main class="main-content">
+        <div class="mobile-topic-select">
+          <label for="topicSelect">Jump to topic</label>
+          <select id="topicSelect">
+            <option value="energy">Work & energy</option>
+            <option value="capacitors">Capacitors</option>
+            <option value="dc">DC circuits</option>
+            <option value="magnetic">Magnetic force</option>
+            <option value="induction">Flux & induction</option>
+            <option value="ac">AC & resonance</option>
+          </select>
+        </div>
+        <div id="panel" aria-live="polite"></div>
+        <footer class="page-footer">
+          <span>Physics II Visualizer</span>
+          <span>All calculations run in your browser · No account or backend</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
