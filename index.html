@@ -77,35 +77,35 @@
 
             <article class="study-card">
               <p class="card-kicker">TRANSMISSION LINES</p><h3>Line loss calculator</h3>
-              <p class="study-description">Model a two-conductor line using its total loop resistance.</p>
+              <p class="study-description">Studio 6 Problem 3: Pcity = 100 MW, Vcity = 50 kV, and each of two lines has Rline = 2 Ω. Enter the combined 4 Ω loop resistance and I = Pcity/Vcity = 2000 A.</p>
               <div class="study-fields">
-                <label>Load current (A) <input id="lineI" type="number" min="0" step="any" value="2"></label>
-                <label>Loop resistance (Ω) <input id="lineR" type="number" min="0" step="any" value="1.5"></label>
-                <label>Supply voltage (V) <input id="lineV" type="number" min="0" step="any" value="120"></label>
+                <label>Load current (A) <input id="lineI" type="number" min="0" step="any" value="2000"></label>
+                <label>Loop resistance (Ω) <input id="lineR" type="number" min="0" step="any" value="4"></label>
+                <label>Supply voltage (V) <input id="lineV" type="number" min="0" step="any" value="50000"></label>
               </div>
               <div class="study-output" id="lineResult" aria-live="polite"></div>
             </article>
 
             <article class="study-card">
               <p class="card-kicker">ELECTRIC MOTORS</p><h3>Motor efficiency</h3>
-              <p class="study-description">Compare electrical input power with mechanical shaft output power. An efficiency above 100% indicates inconsistent input values or a missing power source.</p>
+              <p class="study-description">Studio 7 Problem 1: a 240 V motor is 90% efficient and lifts a 200 N weight at 3.1 m/s. Find the electrical current from Pout = Fv and η = Pout/Pin.</p>
               <div class="study-fields">
-                <label>Supply voltage (V) <input id="motorV" type="number" min="0" step="any" value="24"></label>
-                <label>Current (A) <input id="motorI" type="number" min="0" step="any" value="3"></label>
-                <label>Torque (N·m) <input id="motorT" type="number" min="0" step="any" value="0.5"></label>
-                <label>Speed (rpm) <input id="motorRPM" type="number" min="0" step="any" value="900"></label>
+                <label>Supply voltage (V) <input id="motorV" type="number" min="0" step="any" value="240"></label>
+                <label>Efficiency (%) <input id="motorEff" type="number" min="0.1" max="100" step="any" value="90"></label>
+                <label>Lifted weight (N) <input id="motorWeight" type="number" min="0" step="any" value="200"></label>
+                <label>Lift speed (m/s) <input id="motorSpeed" type="number" min="0" step="any" value="3.1"></label>
               </div>
               <div class="study-output" id="motorResult" aria-live="polite"></div>
             </article>
 
             <article class="study-card">
               <p class="card-kicker">CAPACITORS</p><h3>Charge sharing</h3>
-              <p class="study-description">Two initially charged capacitors are connected in parallel with like polarity.</p>
+              <p class="study-description">Studio 7 Problem 4: 2.0 µF initially at 150 V is connected to an initially uncharged 1.0 µF capacitor. The final common voltage follows charge conservation; the energy difference is dissipated in the 2.2 kΩ resistor.</p>
               <div class="study-fields">
-                <label>C₁ (µF) <input id="shareC1" type="number" min="0.001" step="any" value="10"></label>
-                <label>Initial V₁ (V) <input id="shareV1" type="number" step="any" value="12"></label>
-                <label>C₂ (µF) <input id="shareC2" type="number" min="0.001" step="any" value="20"></label>
-                <label>Initial V₂ (V) <input id="shareV2" type="number" step="any" value="0"></label>
+                <label>Initial capacitor C₁ (µF) <input id="shareC1" type="number" min="0.001" step="any" value="2"></label>
+                <label>Initial voltage V₁ (V) <input id="shareV1" type="number" step="any" value="150"></label>
+                <label>Capacitor C₂ (µF) <input id="shareC2" type="number" min="0.001" step="any" value="1"></label>
+                <label>Initial voltage V₂ (V) <input id="shareV2" type="number" step="any" value="0"></label>
               </div>
               <div class="study-output" id="shareResult" aria-live="polite"></div>
             </article>
@@ -177,6 +177,36 @@
               <canvas class="study-canvas" id="genGraph" aria-label="Rotating-coil magnetic flux and induced emf waveforms with a moving phase marker"></canvas>
               <div class="study-legend"><span>Normalized flux</span><span>Normalized emf</span></div>
               <p class="study-description">Both waveforms are normalized to show their phase relationship; peak flux and peak emf are listed separately above. The marker follows the emf phase.</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">STUDIO 9 · FARADAY & LENZ</p><h3>Straight-wire current inducing loop current</h3>
+              <p class="study-description">Studio 9 Problem 3: a long straight wire carries I(t) = Qt beside a circular loop. The loop's nearest edge is b from the wire.</p>
+              <div class="study-fields">
+                <label>Current slope Q (A/s) <input id="s9Q" type="number" step="any" value="5.88"></label>
+                <label>Loop radius R (cm) <input id="s9Radius" type="number" min="0.001" step="any" value="1.66"></label>
+                <label>Nearest edge distance b (cm) <input id="s9B" type="number" min="0.001" step="any" value="1.36"></label>
+                <label>Loop resistance (Ω) <input id="s9Resistance" type="number" min="0.001" step="any" value="2.79"></label>
+              </div>
+              <div class="study-output" id="s9Result" aria-live="polite"></div>
+              <p class="study-description">For d = b + R, |ε| = μ₀Q[d − √(d² − R²)] and Iind = |ε|/Rloop. For the worksheet's current direction, Lenz's law gives clockwise induced current.</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">STUDIO 10 · AC CIRCUITS</p><h3>RC, RL, and series-RLC worksheet values</h3>
+              <p class="study-description">The controls below start with the values in Recitation 10. Change them to explore how reactance, impedance, phase, current, and power respond.</p>
+              <div class="study-fields">
+                <label>RC resistance (Ω) <input id="s10RcR" type="number" min="0.001" step="any" value="50"></label>
+                <label>RC capacitance (µF) <input id="s10RcC" type="number" min="0.001" step="any" value="50"></label>
+                <label>RC angular frequency (rad/s) <input id="s10RcW" type="number" min="0.001" step="any" value="376.991118"></label>
+                <label>RC peak voltage (V) <input id="s10RcV" type="number" min="0" step="any" value="120"></label>
+                <label>RL resistance (Ω) <input id="s10RlR" type="number" min="0.001" step="any" value="100"></label>
+                <label>RL inductance (H) <input id="s10RlL" type="number" min="0.001" step="any" value="0.25"></label>
+                <label>RL angular frequency (rad/s) <input id="s10RlW" type="number" min="0.001" step="any" value="1000"></label>
+                <label>RL peak voltage (V) <input id="s10RlV" type="number" min="0" step="any" value="10"></label>
+              </div>
+              <div class="study-output" id="s10Result" aria-live="polite"></div>
+              <p class="study-description">The RC worksheet gives φ ≈ −46.7°, I₀ ≈ 1.65 A, Irms ≈ 1.16 A, power factor ≈ 0.686, and Pavg ≈ 67.3 W. The RL worksheet gives φ ≈ +68.2°, I₀ ≈ 0.0371 A, and power factor ≈ 0.371. The series-RLC example above covers Problem 3.</p>
             </article>
 
             <article class="study-card">
