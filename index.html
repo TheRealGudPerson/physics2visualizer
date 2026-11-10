@@ -77,13 +77,29 @@
 
             <article class="study-card">
               <p class="card-kicker">TRANSMISSION LINES</p><h3>Line loss calculator</h3>
-              <p class="study-description">Studio 6 Problem 3: Pcity = 100 MW, Vcity = 50 kV, and each of two lines has Rline = 2 Ω. Enter the combined 4 Ω loop resistance and I = Pcity/Vcity = 2000 A.</p>
+              <p class="study-description">Studio 6 Problem 3: Pcity = 100 MW, Vcity = 50 kV, and each of two lines has Rline = 2 Ω. Enter I = Pcity/Vcity = 2000 A and combined resistance 2Rline = 4 Ω. The result reports total line loss and system efficiency.</p>
               <div class="study-fields">
                 <label>Load current (A) <input id="lineI" type="number" min="0" step="any" value="2000"></label>
                 <label>Loop resistance (Ω) <input id="lineR" type="number" min="0" step="any" value="4"></label>
                 <label>Supply voltage (V) <input id="lineV" type="number" min="0" step="any" value="50000"></label>
               </div>
               <div class="study-output" id="lineResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">STUDIO 6 · RESISTIVITY</p><h3>Heating element and connecting-wire losses</h3>
+              <p class="study-description">Studio 6 Problem 2: a copper element is connected in series with the two leads. The lead length is the combined length of both cables.</p>
+              <div class="study-fields">
+                <label>Supply voltage (V) <input id="s6HeatV" type="number" min="0" step="any" value="24"></label>
+                <label>Element length (m) <input id="s6HeatL" type="number" min="0.001" step="any" value="0.05"></label>
+                <label>Element radius (mm) <input id="s6HeatRadius" type="number" min="0.001" step="any" value="0.50"></label>
+                <label>Element resistivity (Ω·m) <input id="s6HeatRho" type="number" min="0.000000000001" step="any" value="0.000000017"></label>
+                <label>Total lead length (m) <input id="s6LineL" type="number" min="0.001" step="any" value="20"></label>
+                <label>Lead area (mm²) <input id="s6LineA" type="number" min="0.001" step="any" value="2.5"></label>
+                <label>Lead resistivity (Ω·m) <input id="s6LineRho" type="number" min="0.000000000001" step="any" value="0.000000028"></label>
+              </div>
+              <div class="study-output" id="s6HeatResult" aria-live="polite"></div>
+              <p class="study-description">Use Rh = ρL/(πr²), Rline = ρlineLline/Aline, I = V/(Rh + Rline), and P = I²R. Convert mm and mm² to SI units before substituting.</p>
             </article>
 
             <article class="study-card">
