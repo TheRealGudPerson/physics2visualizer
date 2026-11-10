@@ -9,8 +9,8 @@
   const defaults = {
     mass: 2, speed: 4, force: 12, distance: 3, workAngle: 30,
     capacitance: 220, voltage: 12, dielectric: 1, plateArea: 100, gap: 1,
-    c1: 4, c2: 6, c3: 3, c4: 8, capBattery: 12,
-    ohmVoltage: 12, resistance: 6, r1: 4, r2: 8, r3: 12, internalR: 1, battery: 18,
+    c1: 3, c2: 6, c3: 4, c4: 12, capBattery: 12,
+    ohmVoltage: 12, resistance: 6, r1: 33, r2: 33, r3: 47, internalR: 12.5, battery: 6,
     charge: 1.6e-10, particleSpeed: 3.2, particleField: 0.4, particleAngle: 90,
     wireCurrent: 3.5, wireLength: 0.08, wireField: 0.06, wireAngle: 90,
     ionCharge: 1, ionField: 0.3, detectorGap: 0.3, accelVoltage: 3200,
