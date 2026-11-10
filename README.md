@@ -16,9 +16,12 @@ A dependency-free, browser-based PHY2049C study workspace covering work and ener
 The extended workspace below the six topic sections includes:
 
 - Resistor network builder with series, parallel, and series-plus-parallel topologies.
-- Transmission-line voltage drop and resistive power-loss calculator.
-- Electric motor input/output power and efficiency calculator.
-- Capacitor charge-sharing model for two capacitors connected in parallel with like polarity.
+- Studio 6 copper heating-element and lead-wire resistance/power-loss calculator, plus two-line transmission-loss and efficiency calculation.
+- Studio 7 motor-lifting current calculator, internal-resistance resistor network, and capacitor charge-sharing / resistor-energy model.
+- Studio 8 electron magnetic-force values, current-carrying-wire segment model, and mass-spectrometer calculator.
+- Studio 9 straight-wire/circular-loop Faraday induction calculation and rotating-coil alternator field calculator.
+- Studio 10 RC and RL AC impedance/phase/power calculations plus the series-RLC resonance model.
+- Generic capacitor charge-sharing model for two capacitors connected in parallel with like polarity.
 - RC capacitor charging and RL inductor-current growth models with time constants and normalized response plots.
 - Time-domain series-RLC source, resistor, inductor, and capacitor voltage waveforms.
 - Magnetic-field calculations for an infinite straight wire (Ampère's law), finite straight wire (Biot–Savart), and circular N-turn loop.
@@ -34,11 +37,11 @@ The extended workspace below the six topic sections includes:
 - The circuit builder currently supports three predefined resistor topologies, not arbitrary schematic drawing or mesh/nodal analysis.
 - The magnetic-field tool covers idealized straight-wire and circular-loop geometries, not arbitrary 3D wire paths or a general field solver.
 - The particle orbit is a schematic 2D circular path, not a time-integrated 3D particle simulation.
-- The motor calculator assumes shaft output power is torque multiplied by angular speed and compares it with DC electrical input voltage times current.
+- The Studio 7 motor example uses mechanical lifting power Pout = Fv and efficiency η = Pout/Pin to solve the input current.
 - Charge sharing assumes ideal capacitors connected in parallel with like polarity; real transient losses and wiring effects are not modeled.
 - The RC and RL plots show normalized first-order charging/growth responses. They do not model switch bounce, parasitics, or arbitrary source waveforms.
 - The RLC waveform model is steady-state sinusoidal series RLC behavior. It is not a switching transient solver.
-- Example network values are illustrative and are not claimed to be the official Studio 6–10 preset values.
+- Studio-specific presets use values transcribed from the supplied Studio 6–10 question PDFs. The solution PDFs were used as reference where available. No browser execution or new automated testing was performed for these updates.
 
 ## Run locally
 
@@ -71,4 +74,4 @@ The main topics follow the PHY2049C equation-sheet range beginning at kinetic en
 - **Studio 9:** magnetic flux, Faraday/Lenz induction, rotating-coil generator.
 - **Studio 10 / Recitation 10:** RC, RL, and series-RLC AC behavior.
 
-The app labels derived applications separately from relationships printed directly on an equation sheet. The Studio-specific values should be replaced with the assigned worksheet values when working a particular problem.
+The app labels derived applications separately from relationships printed directly on an equation sheet. The worksheet values are loaded as starting presets, not locked inputs. Some worksheet problems are not yet represented by a dedicated solver: the full Studio 7 multi-loop Kirchhoff circuit, the Studio 8 regular-hexagon Biot–Savart derivation, and the Studio 9 two-loop superposition and coaxial-cable Ampère-law cases remain conceptual/manual exercises. The Studio 8 wire-force model evaluates one straight segment at a time rather than summing the complete loop.
