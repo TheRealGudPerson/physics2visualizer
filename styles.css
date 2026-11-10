@@ -129,3 +129,7 @@ h2 { margin: 0; font-size: 22px; letter-spacing: -.025em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+:where(button, input, select, summary, a):focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+}
