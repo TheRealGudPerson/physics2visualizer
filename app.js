@@ -52,7 +52,7 @@
 
   function n(key) {
     const el = panel.querySelector('[data-key="' + key + '"][data-role="number"]');
-    const raw = el ? el.value : values[key];
+    const raw = el && el.value.trim() !== "" ? el.value : values[key];
     const parsed = Number(raw);
     return Number.isFinite(parsed) ? parsed : 0;
   }
@@ -185,7 +185,7 @@
 
   function setOut(id, value, digits) {
     const el = document.getElementById(id);
-    if (el) el.textContent = fmt(value, digits);
+    if (el) el.textContent = typeof value === "number" ? fmt(value, digits) : String(value);
   }
 
   function update() {
