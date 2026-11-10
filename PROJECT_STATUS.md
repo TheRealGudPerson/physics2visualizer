@@ -4,11 +4,11 @@
 **Primary branch:** `main`  
 **Project type:** Static, browser-based Physics II study application  
 **Course context:** PHY2049C  
-**Status (2026-11-10):** A new first-pass runtime has been reconstructed on branch `rebuild/static-runtime`. It is not yet merged or browser-tested. The historical implementation details below describe the intended feature set and should not be read as confirmation that every original feature has been recreated.
+**Status (2026-11-10):** The reconstructed application and expanded study toolkit are implemented on `rebuild/static-runtime` and included in draft PR #1. The branch is not merged to `main`. Browser and course-answer-key testing have been explicitly deferred at the user’s request.
 
 This document describes the intended purpose of the project, what is implemented in the local source, what is currently present in the GitHub repository, and what remains unfinished. It is deliberately explicit about the difference between a feature existing in the local working files and that feature being available from the published repository.
 
-## Rebuild validation pass — 2026-11-10
+## Rebuild implementation status — 2026-11-10
 
 ### Source-level and calculation checks completed
 
@@ -418,26 +418,32 @@ Those helper files are not required by the current direct-loading `index.html`; 
 
 A local JavaScript syntax check has passed, but no claim of complete browser QA or numerical regression testing is being made.
 
-### 6.3 Study features not yet implemented
+### 6.3 Extended study toolkit now implemented on rebuild branch
 
-The following are possible extensions, not completed features:
+- [x] Resistor network builder with series, parallel, and series-plus-parallel topologies.
+- [x] Transmission-line voltage-drop and resistive power-loss calculator.
+- [x] Motor electrical input, mechanical shaft output, and efficiency calculator.
+- [x] Two-capacitor charge-sharing model for ideal parallel connection with like polarity.
+- [x] RC capacitor charging and RL inductor-current growth models, time constants, and normalized response plots.
+- [x] Steady-state time-domain series-RLC waveforms for source, resistor, inductor, and capacitor voltage.
+- [x] Magnetic-field calculations for an infinite straight wire (Ampère's law), finite straight wire (Biot–Savart), and circular N-turn loop.
+- [x] Charged-particle orbit radius and cyclotron period with a schematic 2D orbit drawing.
+- [x] Rotating-coil generator flux/emf waveforms with an animated phase marker.
+- [x] Topic-specific step-by-step solution guides and browser print support for saving the current topic as PDF.
+- [x] Randomized numerical practice questions with immediate answer feedback and an in-session score.
+- [x] Browser-local bookmarks, completed-topic tracking, and notes using local storage.
 
-- [ ] A general-purpose circuit builder for arbitrary resistor or capacitor topologies.
-- [ ] Dedicated transmission-line power-loss calculator.
-- [ ] Dedicated motor input/output power and efficiency calculator.
-- [ ] Dedicated capacitor charge-sharing model.
-- [ ] RC charging/discharging time-constant visualizer.
-- [ ] RL current-growth/decay time-constant visualizer.
-- [ ] Full time-domain AC waveform display for source voltage, resistor voltage, capacitor voltage, and inductor voltage.
-- [ ] Animated particle paths and a fully three-dimensional magnetic-force/vector environment.
-- [ ] General magnetic-field solvers for arbitrary wire/coil geometry.
-- [ ] Fully animated rotating-coil flux and emf waveform.
-- [ ] Step-by-step solution mode that guides the student from a word problem to the correct equation and substitution.
-- [ ] Randomized practice questions and a quiz/score system.
-- [ ] Saved study progress, bookmarks, notes, or user accounts.
-- [ ] Export or print support for worked solutions.
+### Scope boundaries
 
-These items should not be described as current functionality until they are implemented and tested.
+The new tools are intentionally educational models, not full engineering packages:
+- The resistor builder supports three predefined topologies, not arbitrary schematic drawing or general mesh/nodal solving.
+- Magnetic-field tools cover idealized wire and circular-loop geometries, not arbitrary 3D conductors.
+- The particle path is a schematic 2D circular orbit, not a 3D numerical trajectory integrator.
+- Motor efficiency assumes DC input power (VI) and shaft power (	au\omega).
+- Charge sharing assumes ideal capacitors connected in parallel with like polarity.
+- RC/RL plots show first-order charging/growth responses; the RLC waveforms are steady-state sinusoidal behavior, not switching transients.
+- Notes/bookmarks/completion flags remain in the current browser only. There are no accounts, cloud sync, or remote storage.
+- The Studio example values remain illustrative; no claim is made that they match the official Studio 6–10 answer keys.
 
 ---
 
@@ -477,19 +483,21 @@ No GitHub Actions workflow is required for this deployment method. Do not add a 
 
 ---
 
-## 8. Recommended remaining work, in order
+## 8. Remaining work
 
-1. **Publish the runtime files:** add `app.js` and `styles.css` to the GitHub repository root so they match the paths referenced by `index.html`.
-2. **Verify the deployed entry point:** serve the project locally and confirm that the page loads without missing-file or JavaScript errors.
-3. **Validate calculations:** compare representative preset outputs and additional edge cases against the equation sheet and Studio 6–10 answer material.
-4. **Complete interaction and responsive testing:** check controls, topic changes, diagrams, tabs, graph redraws, theme changes, and small-screen layout.
-5. **Enable GitHub Pages:** configure branch deployment from `main` and verify the live site.
-6. **Expand the study coverage:** prioritize missing studio applications such as RC/RL behavior, charge sharing, and motor efficiency based on the topics needed for the course.
+The user has asked to skip testing and have all other implementation work completed. The remaining items are therefore operational or verification tasks, not additional feature requests:
+
+1. Configure GitHub Pages to deploy `main` from `/(root)` after the pull request is accepted.
+2. Browser testing, responsive testing, accessibility review, and cross-browser checks have been deferred.
+3. Validate the illustrative values against the official Studio 6–10 worksheets if those materials are later made available.
+4. Merge PR #1 when the user is ready. It remains a draft and has not been merged.
+
+No additional framework, build pipeline, backend, account system, or GitHub Actions workflow is needed.
 
 ---
 
 ## 9. Status summary
 
-**A first-pass runtime has now been reconstructed on `rebuild/static-runtime`.** It contains the six documented topic families and the initial calculators, but is not yet verified against the original source material or tested in a browser.
+The rebuild branch now includes the six main topic sections and the expanded calculator/study toolkit listed in Section 6.3. The README has been rewritten to document the implemented tools, assumptions, and limitations.
 
-**The next step is validation, not merging blindly:** run syntax and browser checks, correct any defects, compare representative outputs with the studio material, then merge the reviewed branch to `main` and verify GitHub Pages.
+The implementation work requested in this pass is complete on `rebuild/static-runtime`. Browser/course validation was intentionally skipped. The branch remains isolated from `main` in draft PR #1.
