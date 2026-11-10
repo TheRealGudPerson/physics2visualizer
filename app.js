@@ -347,6 +347,7 @@
 
   window.addEventListener("resize", () => {
     if (currentTopic === "ac") update();
+    updateStudyModels();
   });
 
 
