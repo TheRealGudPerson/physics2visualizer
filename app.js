@@ -384,7 +384,7 @@
 
   function updateStudyModels() {
     const r1=val("builderR1"),r2=val("builderR2"),r3=val("builderR3"),vs=val("builderV");
-    if(r1>0&&r2>0&&r3>0){const rp=r2*r3/(r2+r3),rt=r1+rp,i=vs/rt,vp=i*rp;put("builderResult",row("Parallel equivalent",num(rp),"Ω")+row("Total resistance",num(rt),"Ω")+row("Source current",num(i),"A")+row("Parallel branch voltage",num(vp),"V")+row("Branch currents",num(vp/r2)+" A + "+num(vp/r3),""));}
+    if(r1>0&&r2>0&&r3>0){const topology=byId("builderTopology").value,rp=r2*r3/(r2+r3),rt=topology==="series"?r1+r2+r3:topology==="parallel"?1/(1/r1+1/r2+1/r3):r1+rp,i=vs/rt,vp=topology==="mixed"?i*rp:topology==="parallel"?vs:NaN;put("builderResult",row("Equivalent resistance",num(rt),"Ω")+row("Source current",num(i),"A")+(topology==="mixed"?row("Parallel branch voltage",num(vp),"V")+row("Branch currents",num(vp/r2)+" A + "+num(vp/r3),""):topology==="series"?row("Voltage drops",num(i*r1)+", "+num(i*r2)+", "+num(i*r3),"V"):row("Branch currents",num(vs/r1)+", "+num(vs/r2)+", "+num(vs/r3),"A")));}
     const li=val("lineI"),lr=val("lineR"),lv=val("lineV");
     put("lineResult",row("Line voltage drop",num(li*lr),"V")+row("Line power loss",num(li*li*lr),"W")+row("Load-side voltage",num(lv-li*lr),"V")+row("Supply voltage lost",num(lv>0?100*li*lr/lv:NaN),"%"));
     const mv=val("motorV"),mi=val("motorI"),mt=val("motorT"),rpm=val("motorRPM"),pin=mv*mi,omega=rpm*2*Math.PI/60,pout=mt*omega;
@@ -394,13 +394,13 @@
     const tr=val("transR"),tc=val("transC")*1e-6,tl=val("transL")*1e-3,tv=val("transV"),tt=val("transT")*1e-3,tauRC=tr*tc,tauRL=tl/tr,vc=tv*(1-Math.exp(-tt/tauRC)),irc=tv/tr*Math.exp(-tt/tauRC),il=tv/tr*(1-Math.exp(-tt/tauRL));
     put("transResult",row("RC time constant",num(tauRC*1e3),"ms")+row("Capacitor voltage",num(vc),"V")+row("RC charging current",num(irc*1e3),"mA")+row("RL time constant",num(tauRL*1e3),"ms")+row("RL inductor current",num(il*1e3),"mA"));
     const tmax=Math.max(5*tauRC,5*tauRL,1e-9),ts=Array.from({length:121},(_,i)=>tmax*i/120);
-    drawSeries("transientGraph",[{values:ts.map(t=>tv*(1-Math.exp(-t/tauRC)))},{values:ts.map(t=>tv*(1-Math.exp(-t/tauRL)))}],["0","5τ"]);
+    drawSeries("transientGraph",[{values:ts.map(t=>1-Math.exp(-t/tauRC))},{values:ts.map(t=>1-Math.exp(-t/tauRL))}],["0","5τ"]);
     const wr=val("waveR"),wl=val("waveL")*1e-3,wc=val("waveC")*1e-6,wv=val("waveV"),wf=val("waveF"),ww=2*Math.PI*wf,wxl=ww*wl,wxc=1/(ww*wc),wz=Math.sqrt(wr*wr+(wxl-wxc)**2),wi=wv/wz,wphi=Math.atan2(wxl-wxc,wr),period=1/wf;
     put("waveResult",row("Peak current",num(wi),"A")+row("Phase angle",num(wphi*180/Math.PI),"°")+row("Peak resistor voltage",num(wi*wr),"V")+row("Peak inductor voltage",num(wi*wxl),"V")+row("Peak capacitor voltage",num(wi*wxc),"V"));
     const times=Array.from({length:241},(_,i)=>period*i/240),wave=(amp,phase)=>times.map(t=>amp*Math.sin(ww*t+phase));
     drawSeries("waveGraph",[{values:wave(wv,0)},{values:wave(wi*wr,-wphi)},{values:wave(wi*wxl,Math.PI/2-wphi)},{values:wave(wi*wxc,-Math.PI/2-wphi)}],["0","one period"]);
     const mu0=4*Math.PI*1e-7,fi=val("fieldI"),fr=val("fieldR")/100,fn=val("fieldN"),fRad=val("fieldRadius")/100;
-    put("fieldResult",row("Long straight wire",num(mu0*fi/(2*Math.PI*fr)*1e6),"µT")+row("Circular coil center",num(mu0*fn*fi/(2*fRad)*1e6),"µT"));
+    const th1=val("fieldTheta1")*Math.PI/180,th2=val("fieldTheta2")*Math.PI/180,bfinite=mu0*fi/(4*Math.PI*fr)*(Math.sin(th1)+Math.sin(th2));put("fieldResult",row("Ampère: infinite straight wire",num(mu0*fi/(2*Math.PI*fr)*1e6),"µT")+row("Biot–Savart: finite wire",num(bfinite*1e6),"µT")+row("N-turn circular loop center",num(mu0*fn*fi/(2*fRad)*1e6),"µT"));
     const oq=val("orbitQ")*1e-9,om=val("orbitM")*1e-9,ov=val("orbitV")*1e3,ob=val("orbitB")*1e-3,orbitR=om*ov/(oq*ob),orbitPeriod=2*Math.PI*om/(oq*ob);
     put("orbitResult",row("Orbit radius",num(orbitR*100),"cm")+row("Cyclotron period",num(orbitPeriod*1e6),"µs")+row("Cyclotron frequency",num(1/orbitPeriod),"Hz"));
     const oc=byId("orbitGraph"); if(oc){const cx=oc.getContext("2d"),d=window.devicePixelRatio||1,w=oc.clientWidth||440,h=180;oc.width=w*d;oc.height=h*d;cx.scale(d,d);cx.clearRect(0,0,w,h);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--line");cx.beginPath();cx.moveTo(w/2,8);cx.lineTo(w/2,h-8);cx.stroke();const rr=Math.min(65,Math.max(8,orbitR*1000));cx.beginPath();cx.arc(w/2,h/2,rr,0,2*Math.PI);cx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--accent");cx.lineWidth=2;cx.stroke();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--accent-2");cx.beginPath();cx.arc(w/2+rr,h/2,4,0,2*Math.PI);cx.fill();cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--muted");cx.fillText("schematic orbit (not to scale)",10,h-10);}
