@@ -16,7 +16,8 @@ This document describes the intended purpose of the project, what is implemented
 - [x] Checked statically declared input keys against defaults; the missing magnetic and alternator defaults discovered during review were added.
 - [x] Checked all 50 result-output IDs: no duplicates, no outputs without an update path, and no update targets without a corresponding output.
 - [x] Added range-control label associations, explicit IDs for numeric controls, and visible keyboard-focus outlines.
-- [x] Numeric inputs now clamp to their declared minimum/maximum and mirror the clamped value into the paired range control.
+- [x] Numeric inputs now clamp to their declared minimum/maximum and mirror the clamped value into the paired range control; clearing a number field temporarily falls back to its last valid value.
+- [x] Text-valued outputs (such as positive/negative/zero work) are rendered as text rather than being passed through the numeric formatter.
 - [x] Renamed preset buttons to "Load example values" and added notices explaining that current numeric examples are illustrative, not verified official Studio values.
 - [x] Updated the sidebar hint so it no longer promises a diagram that the reconstructed interface does not yet render.
 - [x] Evaluated 16 representative formula cases across all six topics. All 16 passed, including zero-angle/zero-rate edge cases, the documented Studio 6 capacitor topology, Studio 7 current splitting, the Studio 8 mass-spectrometer derivation, and the Studio 9 Faraday-law calculation.
