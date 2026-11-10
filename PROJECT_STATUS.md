@@ -10,7 +10,7 @@ This document describes the intended purpose of the project, what is implemented
 
 ## Rebuild implementation status — 2026-11-10
 
-### Source-level and calculation checks completed
+### Source-level and calculation checks completed before the Studio materials update
 
 - [x] Re-ran JavaScript parse check after edits; passed.
 - [x] Checked statically declared input keys against defaults; the missing magnetic and alternator defaults discovered during review were added.
@@ -18,11 +18,11 @@ This document describes the intended purpose of the project, what is implemented
 - [x] Added range-control label associations, explicit IDs for numeric controls, and visible keyboard-focus outlines.
 - [x] Numeric inputs now clamp to their declared minimum/maximum and mirror the clamped value into the paired range control; clearing a number field temporarily falls back to its last valid value.
 - [x] Text-valued outputs (such as positive/negative/zero work) are rendered as text rather than being passed through the numeric formatter.
-- [x] Renamed preset buttons to "Load example values" and added notices explaining that current numeric examples are illustrative, not verified official Studio values.
+- [x] Renamed preset buttons to "Load example values". The relevant presets have since been updated with values from the supplied Studio PDFs; the latest calculator additions have not been tested.
 - [x] Updated the sidebar hint so it no longer promises a diagram that the reconstructed interface does not yet render.
 - [x] Evaluated 16 representative formula cases across all six topics. All 16 passed, including zero-angle/zero-rate edge cases, the documented Studio 6 capacitor topology, Studio 7 current splitting, the Studio 8 mass-spectrometer derivation, and the Studio 9 Faraday-law calculation.
 
-These formula checks independently evaluate the equations represented in the source. They are **not** browser-driven tests of the rendered application.
+These formula checks independently evaluated the earlier reconstructed equations. They predate the latest Studio-specific edits and are **not** browser-driven tests of the rendered application.
 
 ### RLC cross-check against available course-related material
 
