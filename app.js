@@ -13,7 +13,7 @@
     ohmVoltage: 12, resistance: 6, r1: 4, r2: 8, r3: 12, internalR: 1, battery: 18,
     charge: 1.6, particleSpeed: 2, field: 0.5, particleAngle: 90,
     wireCurrent: 3, wireLength: 0.2, wireAngle: 90,
-    ionCharge: 1.6, detectorGap: 0.08, accelVoltage: 2000,
+    ionCharge: 1, detectorGap: 0.08, accelVoltage: 2000,
     loopArea: 0.02, turns: 100, fluxAngle: 0, fieldRate: 0.2, coilResistance: 10,
     coilRadius: 0.08, rotation: 60, targetEmf: 12,
     acR: 100, inductance: 20, acCapacitance: 100, sourceVoltage: 12, frequency: 5
@@ -134,14 +134,14 @@
 
   function renderMagnetic() {
     return card("Magnetic force on a charged particle", "LORENTZ FORCE",
-      field("charge", "Charge magnitude", 0.1, 5, 0.1, "nC") + field("particleSpeed", "Particle speed", 0, 20, 0.1, "Mm/s") + field("field", "Magnetic field", 0, 2, 0.01, "T") + field("particleAngle", "Angle between v and B", 0, 180, 1, "°"),
+      field("charge", "Charge magnitude", 0.1, 5, 0.1, "nC") + field("particleSpeed", "Particle speed", 0, 20, 0.1, "Mm/s") + field("particleField", "Magnetic field", 0, 2, 0.01, "T") + field("particleAngle", "Angle between v and B", 0, 180, 1, "°"),
       result("particleForce", "Force magnitude", "mN") + result("particleDirection", "Force direction", "") +
       '<p class="readout-note">F = |q|vB sin θ. Direction depends on charge sign and the orientation of v × B.</p>') +
       card("Force on a current-carrying wire", "WIRE IN A FIELD",
-        field("wireCurrent", "Current", 0, 20, 0.1, "A") + field("wireLength", "Length in field", 0, 2, 0.01, "m") + field("field", "Magnetic field", 0, 2, 0.01, "T") + field("wireAngle", "Angle between wire and B", 0, 180, 1, "°"),
+        field("wireCurrent", "Current", 0, 20, 0.1, "A") + field("wireLength", "Length in field", 0, 2, 0.01, "m") + field("wireField", "Magnetic field", 0, 2, 0.01, "T") + field("wireAngle", "Angle between wire and B", 0, 180, 1, "°"),
         result("wireForce", "Force magnitude", "N") + '<p class="readout-note">F = IℓB sin θ. For a wire with multiple differently oriented segments, evaluate each segment separately.</p>') +
       card("Studio 8 · mass spectrometer", "DERIVED MODEL",
-        field("ionCharge", "Ion charge magnitude", 0.1, 5, 0.1, "nC") + field("field", "Magnetic field", 0.01, 2, 0.01, "T") + field("detectorGap", "Detector separation (semicircle diameter)", 0.001, 0.5, 0.001, "m") + field("accelVoltage", "Accelerating voltage", 1, 10000, 10, "V"),
+        field("ionCharge", "Ion charge magnitude", 1, 5, 1, "e") + field("ionField", "Magnetic field", 0.01, 2, 0.01, "T") + field("detectorGap", "Detector separation (semicircle diameter)", 0.001, 0.5, 0.001, "m") + field("accelVoltage", "Accelerating voltage", 1, 10000, 10, "V"),
         result("ionMass", "Ion mass", "kg") + result("ionMassAmu", "Ion mass", "u"),
         button("Load Studio 8 preset", "preset-magnetic")) +
       concept("When is magnetic force zero?", "The magnitude is zero when the velocity is parallel or antiparallel to the magnetic field (θ = 0° or 180°). A stationary charge also experiences no magnetic force.");
@@ -153,7 +153,7 @@
       result("singleFlux", "Flux per loop", "Wb") + result("fluxLinkage", "Flux linkage", "Wb-turn") + result("inducedEmf", "Induced emf magnitude", "V") + result("inducedCurrent", "Induced current magnitude", "A") +
       '<p class="readout-note">This model changes B while holding area and orientation fixed. The direction of induced current depends on whether flux is increasing or decreasing.</p>') +
       card("Studio 9 · rotating-coil alternator", "ROTATING COIL",
-        field("turns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 600, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
+        field("alternatorTurns", "Number of turns", 1, 500, 1, "") + field("coilRadius", "Coil radius", 0.01, 0.3, 0.005, "m") + field("rotation", "Rotation rate", 1, 600, 1, "rpm") + field("targetEmf", "Target peak emf", 0.1, 100, 0.1, "V"),
         result("rotationHz", "Rotation frequency", "Hz") + result("rotationOmega", "Angular frequency", "rad/s") + result("requiredField", "Required magnetic field", "T"),
         button("Load Studio 9 preset", "preset-induction")) +
       concept("What does Lenz's law tell you?", "The induced current creates a magnetic field that opposes the change in magnetic flux that produced it. It does not necessarily oppose the original field itself.");
@@ -217,13 +217,13 @@
       setOut("branchVoltage", vb); setOut("branchI2", i2); setOut("branchI3", i3); setOut("kcl", i2 + i3);
     }
     if (currentTopic === "magnetic") {
-      const q = n("charge") * 1e-9, speed = n("particleSpeed") * 1e6, b = n("field");
+      const q = n("charge") * 1e-9, speed = n("particleSpeed") * 1e6, b = n("particleField");
       const fp = Math.abs(q) * speed * b * Math.sin(n("particleAngle") * rad) * 1e3;
       setOut("particleForce", fp);
       setOut("particleDirection", fp < 1e-12 ? "Zero" : "Perpendicular component");
-      setOut("wireForce", n("wireCurrent") * n("wireLength") * b * Math.sin(n("wireAngle") * rad));
-      const qi = n("ionCharge") * 1e-9, x = n("detectorGap"), vacc = n("accelVoltage");
-      const mass = vacc > 0 ? qi * b * b * x * x / (8 * vacc) : NaN;
+      setOut("wireForce", n("wireCurrent") * n("wireLength") * n("wireField") * Math.sin(n("wireAngle") * rad));
+      const qi = n("ionCharge") * 1.602176634e-19, bi = n("ionField"), x = n("detectorGap"), vacc = n("accelVoltage");
+      const mass = vacc > 0 ? qi * bi * bi * x * x / (8 * vacc) : NaN;
       setOut("ionMass", mass, 5); setOut("ionMassAmu", mass / 1.6605390666e-27, 5);
     }
     if (currentTopic === "induction") {
@@ -233,7 +233,7 @@
       setOut("singleFlux", flux, 5); setOut("fluxLinkage", linkage, 5);
       setOut("inducedEmf", emf); setOut("inducedCurrent", emf / n("coilResistance"));
       const f = n("rotation") / 60, omega = 2 * Math.PI * f, radius = n("coilRadius"), target = n("targetEmf");
-      const coilArea = Math.PI * radius * radius, required = turns * coilArea * omega > 0 ? target / (turns * coilArea * omega) : NaN;
+      const alternatorTurns = n("alternatorTurns"), coilArea = Math.PI * radius * radius, required = alternatorTurns * coilArea * omega > 0 ? target / (alternatorTurns * coilArea * omega) : NaN;
       setOut("rotationHz", f); setOut("rotationOmega", omega); setOut("requiredField", required);
     }
     if (currentTopic === "ac") {
@@ -293,8 +293,8 @@
     const presets = {
       capacitors: { c1: 4, c2: 6, c3: 3, c4: 8, capBattery: 12 },
       dc: { battery: 18, internalR: 1, r1: 4, r2: 8, r3: 12 },
-      magnetic: { ionCharge: 1.6, field: 0.5, detectorGap: 0.08, accelVoltage: 2000 },
-      induction: { turns: 100, coilRadius: 0.08, rotation: 60, targetEmf: 12 },
+      magnetic: { ionCharge: 1, ionField: 0.5, particleField: 0.5, wireField: 0.5, detectorGap: 0.08, accelVoltage: 2000 },
+      induction: { turns: 100, alternatorTurns: 100, coilRadius: 0.08, rotation: 60, targetEmf: 12 },
       ac: { acR: 100, inductance: 20, acCapacitance: 100, sourceVoltage: 12, frequency: 5 }
     };
     Object.assign(values, presets[name] || {});
