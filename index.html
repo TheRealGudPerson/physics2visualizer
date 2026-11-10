@@ -64,7 +64,8 @@
           <div class="study-grid">
             <article class="study-card">
               <p class="card-kicker">CIRCUIT ANALYSIS</p><h3>Resistor network builder</h3>
-              <p class="study-description">A series chain feeding a parallel bank. Enter resistance values in ohms.</p>
+              <p class="study-description">Compare series, parallel, and series-plus-parallel resistor topologies.</p>
+              <label class="study-select-label" for="builderTopology">Connection</label><select id="builderTopology"><option value="mixed">R₁ in series with R₂ ‖ R₃</option><option value="series">R₁ + R₂ + R₃ in series</option><option value="parallel">R₁ ‖ R₂ ‖ R₃ in parallel</option></select>
               <div class="study-fields">
                 <label>Series R₁ <input id="builderR1" type="number" min="0.001" step="any" value="100"></label>
                 <label>Parallel R₂ <input id="builderR2" type="number" min="0.001" step="any" value="220"></label>
@@ -120,7 +121,7 @@
               </div>
               <div class="study-output" id="transResult" aria-live="polite"></div>
               <canvas class="study-canvas" id="transientGraph" aria-label="RC capacitor charging and RL inductor current transient graphs"></canvas>
-              <p class="study-description">RC charging: V꜀ = V(1 − e⁻ᵗ/ᴿᶜ). RL growth: I = (V/R)(1 − e⁻ᵗᴿ/ᴸ).</p>
+              <p class="study-description">The graph shows normalized responses: 1 − e⁻ᵗ/ᴿᶜ for RC voltage and 1 − e⁻ᵗᴿ/ᴸ for RL current. The readouts show physical values.</p>
             </article>
 
             <article class="study-card study-card-wide">
@@ -144,6 +145,8 @@
                 <label>Distance (cm) <input id="fieldR" type="number" min="0.001" step="any" value="2"></label>
                 <label>Turns (N) <input id="fieldN" type="number" min="1" step="1" value="20"></label>
                 <label>Loop radius (cm) <input id="fieldRadius" type="number" min="0.001" step="any" value="10"></label>
+                <label>Finite wire angle θ₁ (°) <input id="fieldTheta1" type="number" min="-90" max="90" step="any" value="45"></label>
+                <label>Finite wire angle θ₂ (°) <input id="fieldTheta2" type="number" min="-90" max="90" step="any" value="45"></label>
               </div>
               <div class="study-output" id="fieldResult" aria-live="polite"></div>
               <p class="study-description">Ideal long straight wire: B = µ₀I/(2πr). Circular N-turn loop center: B = µ₀NI/(2R).</p>
