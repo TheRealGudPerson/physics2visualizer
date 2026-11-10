@@ -384,7 +384,7 @@
   }
 
   let generatorAnimationId = 0;
-  function animateGeneratorWave(fluxPeak, emfPeak, angularSpeed) {
+  function animateGeneratorWave(angularSpeed) {
     if (generatorAnimationId) cancelAnimationFrame(generatorAnimationId);
     const canvas=byId("genGraph"); if(!canvas)return;
     const reduced=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -424,7 +424,7 @@
     const gn=val("genN"),gb=val("genB"),ga=val("genA")*1e-4,gw=val("genRPM")*2*Math.PI/60,gflux=gb*ga,gemf=gn*gb*ga*gw;
     put("genResult",row("Maximum flux per turn",num(gflux),"Wb")+row("Peak induced emf",num(gemf),"V")+row("Angular speed",num(gw),"rad/s"));
     const gt=Array.from({length:241},(_,i)=>i/240*(gw>0?2*Math.PI/gw:1)),phase=gt.map(t=>gw*t);
-    drawSeries("genGraph",[{values:phase.map(p=>gflux*Math.cos(p))},{values:phase.map(p=>gemf*Math.sin(p))}],["0","one rotation"]);animateGeneratorWave(gflux,gemf,gw);
+    drawSeries("genGraph",[{values:phase.map(p=>Math.cos(p))},{values:phase.map(p=>Math.sin(p))}],["0","one rotation"]);animateGeneratorWave(gw);
   }
 
   const solutionGuides = {
