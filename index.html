@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
-  <meta name="description" content="An interactive Physics II equation visualizer for work, capacitors, DC circuits, magnetic forces, induction, and AC resonance.">
+  <meta name="description" content="An interactive Physics II study workspace with circuit, magnetic field, induction, AC, and practice tools.">
   <title>Physics II Visualizer</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
@@ -88,7 +88,7 @@
 
             <article class="study-card">
               <p class="card-kicker">ELECTRIC MOTORS</p><h3>Motor efficiency</h3>
-              <p class="study-description">Compare electrical input power with mechanical shaft output power.</p>
+              <p class="study-description">Compare electrical input power with mechanical shaft output power. An efficiency above 100% indicates inconsistent input values or a missing power source.</p>
               <div class="study-fields">
                 <label>Supply voltage (V) <input id="motorV" type="number" min="0" step="any" value="24"></label>
                 <label>Current (A) <input id="motorI" type="number" min="0" step="any" value="3"></label>
@@ -120,7 +120,8 @@
                 <label>Elapsed time (ms) <input id="transT" type="number" min="0" step="any" value="100"></label>
               </div>
               <div class="study-output" id="transResult" aria-live="polite"></div>
-              <canvas class="study-canvas" id="transientGraph" aria-label="RC capacitor charging and RL inductor current transient graphs"></canvas>
+              <canvas class="study-canvas" id="transientGraph" aria-label="Normalized RC capacitor charging and RL inductor current growth graphs"></canvas>
+              <div class="study-legend"><span>RC capacitor voltage</span><span>RL inductor current</span></div>
               <p class="study-description">The graph shows normalized responses: 1 − e⁻ᵗ/ᴿᶜ for RC voltage and 1 − e⁻ᵗᴿ/ᴸ for RL current. The readouts show physical values.</p>
             </article>
 
@@ -149,7 +150,7 @@
                 <label>Finite wire angle θ₂ (°) <input id="fieldTheta2" type="number" min="-90" max="90" step="any" value="45"></label>
               </div>
               <div class="study-output" id="fieldResult" aria-live="polite"></div>
-              <p class="study-description">Ideal long straight wire: B = µ₀I/(2πr). Circular N-turn loop center: B = µ₀NI/(2R).</p>
+              <p class="study-description">The finite-wire model uses B = µ₀I(sin θ₁ + sin θ₂)/(4πr), with angles measured from the perpendicular to the wire. The infinite-wire result follows Ampère’s law; the loop model is for the field at its center.</p>
             </article>
 
             <article class="study-card">
@@ -174,6 +175,7 @@
               </div>
               <div class="study-output" id="genResult" aria-live="polite"></div>
               <canvas class="study-canvas" id="genGraph" aria-label="Rotating-coil magnetic flux and induced emf waveforms with a moving phase marker"></canvas>
+              <div class="study-legend"><span>Flux</span><span>Induced emf</span></div>
               <p class="study-description">The marker moves through one electrical cycle, showing the instantaneous phase of flux and emf.</p>
             </article>
 
