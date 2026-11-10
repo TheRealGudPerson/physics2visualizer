@@ -382,6 +382,22 @@
     ctx.fillText(labels?.[0] || "0",pad,bottom+17*dpr);ctx.fillText(labels?.[1] || "time",right-35*dpr,bottom+17*dpr);
   }
 
+  let generatorAnimationId = 0;
+  function animateGeneratorWave(fluxPeak, emfPeak, angularSpeed) {
+    if (generatorAnimationId) cancelAnimationFrame(generatorAnimationId);
+    const canvas=byId("genGraph"); if(!canvas)return;
+    const reduced=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start=performance.now(),duration=angularSpeed>0?2*Math.PI/angularSpeed*1000:1000;
+    function frame(now){
+      const dpr=window.devicePixelRatio||1,ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height,pad=34*dpr,right=w-12*dpr,top=14*dpr,bottom=h-25*dpr;
+      const maxAbs=Math.max(1e-12,Math.abs(fluxPeak),Math.abs(emfPeak)),phase=reduced?0:((now-start)%duration)/duration*2*Math.PI;
+      const x=pad+(right-pad)*phase/(2*Math.PI),y=top+(bottom-top)*(0.5-(emfPeak*Math.sin(phase))/(2*maxAbs));
+      ctx.beginPath();ctx.arc(x,y,5*dpr,0,2*Math.PI);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue("--warm").trim()||"#f1bd75";ctx.fill();
+      if(!reduced)generatorAnimationId=requestAnimationFrame(frame);
+    }
+    generatorAnimationId=requestAnimationFrame(frame);
+  }
+
   function updateStudyModels() {
     const r1=val("builderR1"),r2=val("builderR2"),r3=val("builderR3"),vs=val("builderV");
     if(r1>0&&r2>0&&r3>0){const topology=byId("builderTopology").value,rp=r2*r3/(r2+r3),rt=topology==="series"?r1+r2+r3:topology==="parallel"?1/(1/r1+1/r2+1/r3):r1+rp,i=vs/rt,vp=topology==="mixed"?i*rp:topology==="parallel"?vs:NaN;put("builderResult",row("Equivalent resistance",num(rt),"Ω")+row("Source current",num(i),"A")+(topology==="mixed"?row("Parallel branch voltage",num(vp),"V")+row("Branch currents",num(vp/r2)+" A + "+num(vp/r3),""):topology==="series"?row("Voltage drops",num(i*r1)+", "+num(i*r2)+", "+num(i*r3),"V"):row("Branch currents",num(vs/r1)+", "+num(vs/r2)+", "+num(vs/r3),"A")));}
@@ -407,7 +423,7 @@
     const gn=val("genN"),gb=val("genB"),ga=val("genA")*1e-4,gw=val("genRPM")*2*Math.PI/60,gflux=gb*ga,gemf=gn*gb*ga*gw;
     put("genResult",row("Maximum flux per turn",num(gflux),"Wb")+row("Peak induced emf",num(gemf),"V")+row("Angular speed",num(gw),"rad/s"));
     const gt=Array.from({length:241},(_,i)=>i/240*(gw>0?2*Math.PI/gw:1)),phase=gt.map(t=>gw*t);
-    drawSeries("genGraph",[{values:phase.map(p=>gflux*Math.cos(p))},{values:phase.map(p=>gemf*Math.sin(p))}],["0","one rotation"]);
+    drawSeries("genGraph",[{values:phase.map(p=>gflux*Math.cos(p))},{values:phase.map(p=>gemf*Math.sin(p))}],["0","one rotation"]);animateGeneratorWave(gflux,gemf,gw);
   }
 
   const solutionGuides = {
