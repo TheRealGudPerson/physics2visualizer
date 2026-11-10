@@ -53,6 +53,170 @@
           </select>
         </div>
         <div id="panel" aria-live="polite"></div>
+
+        <section class="study-lab" id="studyLab" aria-labelledby="studyLabTitle">
+          <div class="study-heading">
+            <p class="eyebrow">EXTENDED TOOLKIT</p>
+            <h2 id="studyLabTitle">More Physics II models</h2>
+            <p class="hero-copy">Additional circuit, induction, and magnetic-field models, plus study tools. All values are calculated locally in this browser.</p>
+          </div>
+
+          <div class="study-grid">
+            <article class="study-card">
+              <p class="card-kicker">CIRCUIT ANALYSIS</p><h3>Resistor network builder</h3>
+              <p class="study-description">A series chain feeding a parallel bank. Enter resistance values in ohms.</p>
+              <div class="study-fields">
+                <label>Series R₁ <input id="builderR1" type="number" min="0.001" step="any" value="100"></label>
+                <label>Parallel R₂ <input id="builderR2" type="number" min="0.001" step="any" value="220"></label>
+                <label>Parallel R₃ <input id="builderR3" type="number" min="0.001" step="any" value="330"></label>
+                <label>Source voltage <input id="builderV" type="number" min="0" step="any" value="12"></label>
+              </div>
+              <div class="study-output" id="builderResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">TRANSMISSION LINES</p><h3>Line loss calculator</h3>
+              <p class="study-description">Model a two-conductor line using its total loop resistance.</p>
+              <div class="study-fields">
+                <label>Load current (A) <input id="lineI" type="number" min="0" step="any" value="2"></label>
+                <label>Loop resistance (Ω) <input id="lineR" type="number" min="0" step="any" value="1.5"></label>
+                <label>Supply voltage (V) <input id="lineV" type="number" min="0" step="any" value="120"></label>
+              </div>
+              <div class="study-output" id="lineResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">ELECTRIC MOTORS</p><h3>Motor efficiency</h3>
+              <p class="study-description">Compare electrical input power with mechanical shaft output power.</p>
+              <div class="study-fields">
+                <label>Supply voltage (V) <input id="motorV" type="number" min="0" step="any" value="24"></label>
+                <label>Current (A) <input id="motorI" type="number" min="0" step="any" value="3"></label>
+                <label>Torque (N·m) <input id="motorT" type="number" min="0" step="any" value="0.5"></label>
+                <label>Speed (rpm) <input id="motorRPM" type="number" min="0" step="any" value="900"></label>
+              </div>
+              <div class="study-output" id="motorResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">CAPACITORS</p><h3>Charge sharing</h3>
+              <p class="study-description">Two initially charged capacitors are connected in parallel with like polarity.</p>
+              <div class="study-fields">
+                <label>C₁ (µF) <input id="shareC1" type="number" min="0.001" step="any" value="10"></label>
+                <label>Initial V₁ (V) <input id="shareV1" type="number" step="any" value="12"></label>
+                <label>C₂ (µF) <input id="shareC2" type="number" min="0.001" step="any" value="20"></label>
+                <label>Initial V₂ (V) <input id="shareV2" type="number" step="any" value="0"></label>
+              </div>
+              <div class="study-output" id="shareResult" aria-live="polite"></div>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">TRANSIENT RESPONSE</p><h3>RC and RL circuits</h3>
+              <div class="study-fields">
+                <label>Resistance (Ω) <input id="transR" type="number" min="0.001" step="any" value="1000"></label>
+                <label>Capacitance (µF) <input id="transC" type="number" min="0.001" step="any" value="100"></label>
+                <label>Inductance (mH) <input id="transL" type="number" min="0.001" step="any" value="100"></label>
+                <label>Source voltage (V) <input id="transV" type="number" min="0" step="any" value="5"></label>
+                <label>Elapsed time (ms) <input id="transT" type="number" min="0" step="any" value="100"></label>
+              </div>
+              <div class="study-output" id="transResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="transientGraph" aria-label="RC capacitor charging and RL inductor current transient graphs"></canvas>
+              <p class="study-description">RC charging: V꜀ = V(1 − e⁻ᵗ/ᴿᶜ). RL growth: I = (V/R)(1 − e⁻ᵗᴿ/ᴸ).</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">AC WAVEFORMS</p><h3>Time-domain series-RLC voltages</h3>
+              <div class="study-fields">
+                <label>R (Ω) <input id="waveR" type="number" min="0.001" step="any" value="100"></label>
+                <label>L (mH) <input id="waveL" type="number" min="0.001" step="any" value="50"></label>
+                <label>C (µF) <input id="waveC" type="number" min="0.001" step="any" value="10"></label>
+                <label>Source peak (V) <input id="waveV" type="number" min="0" step="any" value="12"></label>
+                <label>Frequency (Hz) <input id="waveF" type="number" min="0.001" step="any" value="1000"></label>
+              </div>
+              <div class="study-output" id="waveResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="waveGraph" aria-label="Source, resistor, inductor, and capacitor voltage waveforms"></canvas>
+              <div class="study-legend"><span>Source</span><span>Resistor</span><span>Inductor</span><span>Capacitor</span></div>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">MAGNETIC FIELDS</p><h3>Biot–Savart / Ampère models</h3>
+              <div class="study-fields">
+                <label>Current (A) <input id="fieldI" type="number" step="any" value="5"></label>
+                <label>Distance (cm) <input id="fieldR" type="number" min="0.001" step="any" value="2"></label>
+                <label>Turns (N) <input id="fieldN" type="number" min="1" step="1" value="20"></label>
+                <label>Loop radius (cm) <input id="fieldRadius" type="number" min="0.001" step="any" value="10"></label>
+              </div>
+              <div class="study-output" id="fieldResult" aria-live="polite"></div>
+              <p class="study-description">Ideal long straight wire: B = µ₀I/(2πr). Circular N-turn loop center: B = µ₀NI/(2R).</p>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">PARTICLE MOTION</p><h3>Charged-particle orbit</h3>
+              <div class="study-fields">
+                <label>Charge magnitude (nC) <input id="orbitQ" type="number" min="0.001" step="any" value="1.6"></label>
+                <label>Mass (µg) <input id="orbitM" type="number" min="0.001" step="any" value="1"></label>
+                <label>Speed (km/s) <input id="orbitV" type="number" min="0" step="any" value="50"></label>
+                <label>Magnetic field (mT) <input id="orbitB" type="number" min="0.001" step="any" value="20"></label>
+              </div>
+              <div class="study-output" id="orbitResult" aria-live="polite"></div>
+              <canvas class="study-canvas orbit-canvas" id="orbitGraph" aria-label="Schematic circular charged-particle path"></canvas>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">ELECTROMAGNETIC INDUCTION</p><h3>Rotating-coil generator</h3>
+              <div class="study-fields">
+                <label>Turns (N) <input id="genN" type="number" min="1" step="1" value="100"></label>
+                <label>Field (T) <input id="genB" type="number" min="0" step="any" value="0.5"></label>
+                <label>Coil area (cm²) <input id="genA" type="number" min="0" step="any" value="100"></label>
+                <label>Rotation (rpm) <input id="genRPM" type="number" min="0" step="any" value="600"></label>
+              </div>
+              <div class="study-output" id="genResult" aria-live="polite"></div>
+              <canvas class="study-canvas" id="genGraph" aria-label="Rotating-coil magnetic flux and induced emf waveforms"></canvas>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">STUDY WORKFLOW</p><h3>Step-by-step solution guide</h3>
+              <label class="study-select-label" for="solutionTopic">Choose a topic</label>
+              <select id="solutionTopic">
+                <option value="energy">Work & energy</option><option value="capacitors">Capacitors</option>
+                <option value="dc">DC circuits</option><option value="magnetic">Magnetic force</option>
+                <option value="induction">Induction</option><option value="ac">AC circuits</option>
+              </select>
+              <div class="study-output" id="solutionSteps" aria-live="polite"></div>
+              <button class="small-button" id="printSolution" type="button">Print / save worked guide</button>
+            </article>
+
+            <article class="study-card">
+              <p class="card-kicker">PRACTICE</p><h3>Randomized question</h3>
+              <p id="quizPrompt" class="study-description">Generate a question to practice one of the core relationships.</p>
+              <button class="small-button" id="newQuestion" type="button">New question</button>
+              <div class="study-fields quiz-answer-row">
+                <label>Your numerical answer <input id="quizAnswer" type="number" step="any" placeholder="Enter a value"></label>
+                <button class="small-button" id="checkAnswer" type="button">Check</button>
+              </div>
+              <div class="study-output" id="quizFeedback" aria-live="polite"></div>
+              <p class="study-description" id="quizScore">Score: 0 / 0</p>
+            </article>
+
+            <article class="study-card study-card-wide">
+              <p class="card-kicker">LOCAL STUDY DATA</p><h3>Bookmarks, notes & progress</h3>
+              <p class="study-description">Saved only in this browser using local storage. No account or server is involved.</p>
+              <div class="study-fields">
+                <label>Current topic
+                  <select id="saveTopic"><option value="energy">Work & energy</option><option value="capacitors">Capacitors</option><option value="dc">DC circuits</option><option value="magnetic">Magnetic force</option><option value="induction">Induction</option><option value="ac">AC & resonance</option></select>
+                </label>
+                <label>Note title <input id="noteTitle" type="text" maxlength="80" placeholder="e.g. Remember sign convention"></label>
+              </div>
+              <label class="study-note-label" for="studyNote">Your note</label>
+              <textarea id="studyNote" rows="3" maxlength="2000" placeholder="Write a reminder or a worked step..."></textarea>
+              <div class="study-actions">
+                <button class="small-button" id="saveNote" type="button">Save note</button>
+                <button class="small-button" id="bookmarkTopic" type="button">Bookmark topic</button>
+                <button class="small-button" id="markComplete" type="button">Mark topic complete</button>
+              </div>
+              <div class="study-output" id="savedStudyData" aria-live="polite"></div>
+            </article>
+          </div>
+        </section>
         <footer class="page-footer">
           <span>Physics II Visualizer</span>
           <span>All calculations run in your browser · No account or backend</span>
